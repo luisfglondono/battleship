@@ -1,38 +1,48 @@
 package com.example.battleship.models;
 
+import java.util.Random;
+
 public class Ship {
     private int tailX;
     private int tailY;
     private int length;
-    private boolean isHorizontal;
-    private Type type;
+    private Direction direction;
 
     public enum Type {
-        AIRCRAFT_CARRIER,
+        CARRIER,
         SUBMARINE,
         DESTROYER,
         FRIGATE
     }
 
+    public enum Direction {
+        HORIZONTAL,
+        VERTICAL
+    }
+
     public Ship(Type type) {
-        this.type = type;
+        Random random = new Random();
+
+        direction = Direction.values()[random.nextInt(Direction.values().length)];
 
         switch (type) {
-            case AIRCRAFT_CARRIER:
-                length = 4;
+            case CARRIER:
+                this.length = 4;
                 break;
 
             case SUBMARINE:
-                length = 3;
+                this.length = 3;
                 break;
 
             case DESTROYER:
-                length = 2;
+                this.length = 2;
                 break;
             case FRIGATE:
-                length = 1;
+                this.length = 1;
                 break;
         }
+
+        System.out.println("length = " + length);
     }
 
     public int getTailX() {
@@ -51,24 +61,33 @@ public class Ship {
         this.tailY = tailY;
     }
 
-    public void setOrientation(boolean isHorizontal) {
-        this.isHorizontal = isHorizontal;
+    public void setOrientation(Direction direction) {
+        this.direction = direction;
     }
 
     public int getHeight() {
-        return isHorizontal ? 1 : length;
+        return direction == Direction.VERTICAL ? length : 1;
     }
 
     public int getWidth() {
-        return isHorizontal ? length : 1;
+        return direction == Direction.HORIZONTAL ? length : 1;
     }
 
     public int getLength() {
         return length;
     }
 
-    public boolean isHorizontal() {
-        return isHorizontal;
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setPosition(int x, int y) {
+        this.tailX = x;
+        this.tailY = y;
+    }
+
+    public void rotate() {
+        direction = direction == Direction.HORIZONTAL ? Direction.VERTICAL : Direction.HORIZONTAL;
     }
 
     public boolean checkPosition(int x, int y) {
