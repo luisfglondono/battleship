@@ -42,7 +42,6 @@ public class Ship {
                 break;
         }
 
-        System.out.println("length = " + length);
     }
 
     public int getTailX() {
@@ -92,8 +91,6 @@ public class Ship {
 
     public boolean checkPosition(int x, int y) {
 
-        System.out.println("getHeight() = " + getHeight());
-        System.out.println("getWidth() = " + getWidth());
         return tailX <= x && tailX + getWidth() - 1 >= x && tailY <= y && tailY + getHeight() - 1 >= y;
     }
 }
