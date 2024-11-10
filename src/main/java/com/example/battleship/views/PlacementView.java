@@ -37,7 +37,7 @@ public class PlacementView extends Stage
         this.placementController = loader.getController();
         this.setTitle("Batalla Naval");
         Scene scene = new Scene(root);
-        this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/yate.png")));
+        this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/images/yate.png")));
         this.setScene(scene);
         this.show();
     }

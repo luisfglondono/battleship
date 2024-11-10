@@ -36,7 +36,7 @@ public class informationView extends Stage
         // se usa para conectar la vista de Game con el controlador de game
         this.informationController = loader.getController();
         this.setTitle("Batalla Naval");
-        this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/yate.png")));
+        this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/images/yate.png")));
         Scene scene = new Scene(root);
         this.setScene(scene);
         this.show();

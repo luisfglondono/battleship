@@ -2,6 +2,9 @@ package com.example.battleship.controllers;
 
 import com.example.battleship.models.Matrix;
 import com.example.battleship.models.Ship;
+import com.example.battleship.views.GameView;
+import com.example.battleship.views.PlacementView;
+import com.example.battleship.views.alert.AlertBox;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -10,6 +13,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.geometry.Pos;
+import javafx.stage.Stage;
+
+import javafx.event.ActionEvent;
+import java.io.IOException;
 
 public class PlacementController {
     @FXML
@@ -26,6 +33,7 @@ public class PlacementController {
     private final int CELL_SIZE = GRID_SIZE / NUMBERS_CELL;
 
     private Matrix playerBoard;
+    private Matrix machineBoard;
 
     private boolean movementValid;
     private int positionInitialX;
@@ -216,6 +224,28 @@ public class PlacementController {
             path.setUserData(ship);
 
             panePosition.getChildren().add(path);
+        }
+    }
+    @FXML
+    void onActionMachineView(ActionEvent event) {
+
+
+    }
+
+    @FXML
+    void onActionPlayButton(ActionEvent event) {
+        AlertBox alertBox = new AlertBox();
+        boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres comenzar una partida?, (Los barcos no se podrán mover una vez iniciada la partida)");
+        if (confirmed)
+        {
+            try
+            {
+                GameView gameView = new GameView(machineBoard, playerBoard);
+                gameView.show();
+                ((Stage) panePosition.getScene().getWindow()).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
