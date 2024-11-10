@@ -28,8 +28,6 @@ public class Matrix {
 
         int x, y;
 
-        System.out.println("ships.size() = " + ships.size());
-
         initializeShips();
 
         for (Ship ship : ships) {
@@ -39,10 +37,6 @@ public class Matrix {
             } while (!this.putShip(x, y, ship));
 
             ship.setPosition(x, y);
-        }
-
-        for (Ship ship : ships) {
-            System.out.println(ship);
         }
     }
 
@@ -123,5 +117,4 @@ public class Matrix {
         }
         System.out.println();
     }
-
 }
