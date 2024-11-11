@@ -44,6 +44,10 @@ public class Matrix {
         return ships.get(i);
     }
 
+    public List<Ship> getShips() {
+        return ships;
+    }
+
     public void initializeShips() {
         Map<Ship.Type, Integer> shipTypes = new HashMap<>();
         shipTypes.put(Ship.Type.CARRIER, 1);

@@ -124,17 +124,21 @@ public class PlacementController {
                 movementValid = playerBoard.validatePosition(this.targetShip.getTailX(), this.targetShip.getTailY(), this.targetShip);
 
                 if (movementValid) {
-                    this.targetPath.getElements().clear();
+                    // Actualiza el path del barco después de rotarlo
+                    Path newPath = this.targetShip.getDraw(this.targetShip.getType().ordinal() + 1);
+                    newPath.setLayoutX(this.targetShip.getTailX() * CELL_SIZE);
+                    newPath.setLayoutY(this.targetShip.getTailY() * CELL_SIZE);
 
-                    this.targetPath.getElements().add(new MoveTo(0, 0));
-                    this.targetPath.getElements().add(new LineTo(0, this.targetShip.getHeight() * CELL_SIZE));
-                    this.targetPath.getElements().add(new LineTo(this.targetShip.getWidth() * CELL_SIZE, this.targetShip.getHeight() * CELL_SIZE));
-                    this.targetPath.getElements().add(new LineTo(this.targetShip.getWidth() * CELL_SIZE, 0));
-                    this.targetPath.getElements().add(new LineTo(0, 0));
+                    // Mantén los cuadros azules de fondo
+                    newPath.setStrokeWidth(3);
+                    newPath.setStroke(Color.web("#00f"));
+                    newPath.setFill(Color.rgb(0, 0, 255, 0.05));
 
-                    this.targetPath.setLayoutX(this.targetShip.getTailX() * CELL_SIZE);
-                    this.targetPath.setLayoutY(this.targetShip.getTailY() * CELL_SIZE);
+                    newPath.setUserData(this.targetShip);
 
+                    panePosition.getChildren().add(newPath);
+                    panePosition.getChildren().remove(this.targetPath);
+                    this.targetPath = newPath;
                 } else {
                     this.targetShip.rotate();
                 }
@@ -194,28 +198,27 @@ public class PlacementController {
 
     public void drawShips() {
         Ship ship;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < playerBoard.getShips().size(); i++) {
             ship = playerBoard.getShip(i);
 
-            Path path = new Path();
+            if (ship != null && ship.getType() != null) {
+                Path path = ship.getDraw(ship.getType().ordinal() + 1);
 
-            path.getElements().add(new MoveTo(0, 0));
-            path.getElements().add(new LineTo(0, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, 0));
-            path.getElements().add(new LineTo(0, 0));
-            path.getElements().add(new ArcTo());
+                if (path != null) {
+                    path.setLayoutX(ship.getTailX() * CELL_SIZE);
+                    path.setLayoutY(ship.getTailY() * CELL_SIZE);
 
-            path.setLayoutX(ship.getTailX() * CELL_SIZE);
-            path.setLayoutY(ship.getTailY() * CELL_SIZE);
+                    path.setStrokeWidth(3);
+                    path.setStroke(Color.web("#00f"));
+                    path.setFill(Color.rgb(0, 0, 255, 0.05));
 
-            path.setStrokeWidth(3);
-            path.setStroke(Color.web("#00f"));
-            path.setFill(Color.rgb(0, 0, 255, 0.05));
+                    path.setUserData(ship);
 
-            path.setUserData(ship);
-
-            panePosition.getChildren().add(path);
+                    panePosition.getChildren().add(path);
+                } else {
+                    System.err.println("Error: Path is null for ship type " + ship.getType());
+                }
+            }
         }
     }
 }
