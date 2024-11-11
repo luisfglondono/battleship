@@ -44,6 +44,7 @@ public class PlacementController {
 
     public void initialize() {
         playerBoard = new Matrix();
+        machineBoard = new Matrix();
         movementValid = false;
 
         this.drawGrid();

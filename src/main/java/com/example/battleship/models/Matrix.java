@@ -117,4 +117,71 @@ public class Matrix {
         }
         System.out.println();
     }
+    public boolean isWaterHitOrSunk(int x, int y) {
+        State state = board.get(x).get(y);
+        return state == State.WATER || state == State.HIT || state == State.SUNK;
+    }
+    public void changeState(int x, int y, State newState) {
+        board.get(y).set(x, newState);
+    }
+    public State getState(int x, int y) {
+        return board.get(y).get(x);
+    }
+    public void updateShipStateToHit(int x, int y) {
+        for (Ship ship : ships) {
+            int shipX = ship.getTailX();
+            int shipY = ship.getTailY();
+            int length = ship.getLength();
+            Ship.Direction direction = ship.getDirection();
+
+            for (int i = 0; i < length; i++) {
+                int currentX = direction == Ship.Direction.HORIZONTAL ? shipX + i : shipX;
+                int currentY = direction == Ship.Direction.VERTICAL ? shipY + i : shipY;
+
+                if (currentX == x && currentY == y) {
+                    changeState(x, y, State.HIT);
+                    return;
+                }
+            }
+        }
+    }
+    public void updateAndCheckShipStateToSunk() {
+        for (Ship ship : ships) {
+            int shipX = ship.getTailX();
+            int shipY = ship.getTailY();
+            int length = ship.getLength();
+            Ship.Direction direction = ship.getDirection();
+            boolean allHit = true;
+
+            for (int i = 0; i < length; i++) {
+                int currentX = direction == Ship.Direction.HORIZONTAL ? shipX + i : shipX;
+                int currentY = direction == Ship.Direction.VERTICAL ? shipY + i : shipY;
+
+
+                if (board.get(currentY).get(currentX) != State.HIT) {
+                    allHit = false;
+                }
+            }
+
+            if (allHit) {
+                for (int i = 0; i < length; i++) {
+                    int sunkX = direction == Ship.Direction.HORIZONTAL ? shipX + i : shipX;
+                    int sunkY = direction == Ship.Direction.VERTICAL ? shipY + i : shipY;
+                    changeState(sunkX, sunkY, State.SUNK);
+                }
+            }
+        }
+    }
+    public boolean allShipsSunk() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (board.get(i).get(j) == State.OCCUPIED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 }
