@@ -35,9 +35,9 @@ public class PlacementView extends Stage
         Parent root = loader.load();
         // se usa para conectar la vista de Game con el controlador de game
         this.placementController = loader.getController();
-        this.setTitle("Batalla Naval");
+        this.setTitle("Battle Ship");
         Scene scene = new Scene(root);
-        this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/yate.png")));
+        this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/images/yate.png")));
         this.setScene(scene);
         this.show();
     }

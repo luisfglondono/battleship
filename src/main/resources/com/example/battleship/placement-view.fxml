@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="520.0" spacing="10.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.PlacementController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="520.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.PlacementController">
     <children>
         <ImageView fitHeight="233.0" fitWidth="478.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -76,11 +76,11 @@
         </GridPane>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
             <children>
-                <Button mnemonicParsing="false" style="-fx-border-width: 3; -fx-border-color: black; -fx-background-color: #38419D; -fx-border-radius: 3;" text="JUGAR" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#onActionPlayButton" style="-fx-border-width: 3; -fx-border-color: black; -fx-background-color: #38419D; -fx-border-radius: 3;" text="JUGAR" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font></Button>
-                <Button mnemonicParsing="false" style="-fx-border-color: black; -fx-border-width: 3; -fx-background-color: #3887BE; -fx-border-radius: 3;" text="VISTA MÁQUINA" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#onActionMachineView" style="-fx-border-color: black; -fx-border-width: 3; -fx-background-color: #3887BE; -fx-border-radius: 3;" text="VISTA MÁQUINA" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font></Button>

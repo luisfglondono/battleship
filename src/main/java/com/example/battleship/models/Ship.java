@@ -6,6 +6,7 @@ public class Ship {
     private int tailX;
     private int tailY;
     private int length;
+    private int hits;
     private Direction direction;
 
     public enum Type {
@@ -51,6 +52,12 @@ public class Ship {
     public void setTailX(int tailX) {
         this.tailX = tailX;
     }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void setHits() {this.hits += 1;}
 
     public int getTailY() {
         return tailY;

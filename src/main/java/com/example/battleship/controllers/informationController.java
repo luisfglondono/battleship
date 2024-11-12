@@ -1,5 +1,6 @@
 package com.example.battleship.controllers;
 
+import com.example.battleship.views.GameView;
 import com.example.battleship.views.PlacementView;
 import com.example.battleship.views.alert.AlertBox;
 import javafx.event.ActionEvent;
@@ -19,8 +20,8 @@ public class informationController {
     void onInformationButton(ActionEvent event) {
         new AlertBox().showAlert(
                 "Instrucciones",
-                "Bienvenido al juego batalla naval",
-                "El juego llamado Batalla Naval es un juego de estrategia donde dos jugadores (humano y máquina) compiten por hundir la flota del oponente. Cada jugador coloca sus barcos en un tablero de coordenadas y luego intenta adivinar la ubicación de los barcos del oponente para hundirlos, el primero que derribe la flota del oponente gana la partida.",
+                "Bienvenido al juego Battle ship",
+                "El juego llamado Battle ship es un juego de estrategia donde dos jugadores (humano y máquina) compiten por hundir la flota del oponente. Cada jugador coloca sus barcos en un tablero de coordenadas y luego intenta adivinar la ubicación de los barcos del oponente para hundirlos, el primero que derribe la flota del oponente gana la partida.",
                 Alert.AlertType.INFORMATION
         );
 
@@ -46,17 +47,24 @@ public class informationController {
 
     @FXML
     void onYesButton(ActionEvent event) {
-        AlertBox alertBox = new AlertBox();
-        boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres continuar con el juego anterior?");
-        if (confirmed)
-        {
-//            try
-//            {
+//        //File saveFile = new File("path/to/your/savefile.txt");
+//        if (!saveFile.exists()) {
+//            new AlertBox().showAlert(
+//                    "Error",
+//                    "No se puede continuar",
+//                    "No se ha empezado ningún juego.",
+//                    Alert.AlertType.ERROR
+//            );
+//        } else {
+//            try {
+//
+//
+//                GameView gameView = new GameView(machineBoard, playerBoard);
+//                gameView.show();
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-        }
-
-    }
+//        }
+   }
 
 }
