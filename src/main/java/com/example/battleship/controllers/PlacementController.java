@@ -3,6 +3,7 @@ package com.example.battleship.controllers;
 import com.example.battleship.models.Matrix;
 import com.example.battleship.models.Ship;
 import com.example.battleship.views.GameView;
+import com.example.battleship.views.MachineViewView;
 import com.example.battleship.views.PlacementView;
 import com.example.battleship.views.alert.AlertBox;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class PlacementController {
+    private static PlacementController instance;
     @FXML
     private AnchorPane columnsPane;
 
@@ -42,7 +44,15 @@ public class PlacementController {
     private Path targetPath;
     private Ship targetShip;
 
+    public static PlacementController getInstance() {
+        return instance;
+    }
+    public void show() {
+        Stage stage = (Stage) panePosition.getScene().getWindow();
+        stage.show();
+    }
     public void initialize() {
+        instance = this;
         playerBoard = new Matrix();
         machineBoard = new Matrix();
         movementValid = false;
@@ -229,6 +239,19 @@ public class PlacementController {
     }
     @FXML
     void onActionMachineView(ActionEvent event) {
+        AlertBox alertBox = new AlertBox();
+        boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres ver ambos tableros?.");
+        if (confirmed)
+        {
+            try
+            {
+                MachineViewView machineView = new MachineViewView(machineBoard, playerBoard);
+                machineView.show();
+                ((Stage) panePosition.getScene().getWindow()).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 
     }

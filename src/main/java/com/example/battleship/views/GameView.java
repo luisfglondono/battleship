@@ -20,7 +20,7 @@ public class GameView extends Stage {
         Parent root = loader.load();
         this.gameController = loader.getController();
         this.gameController.setBoards(machineBoard, playerBoard);
-        this.setTitle("Batalla Naval");
+        this.setTitle("Battle Ship");
         Scene scene = new Scene(root);
         this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/images/yate.png")));
         this.setScene(scene);
