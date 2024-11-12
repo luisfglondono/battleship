@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.geometry.Pos;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
@@ -145,14 +146,20 @@ public class PlacementController {
                 if (movementValid) {
                     this.targetPath.getElements().clear();
 
-                    this.targetPath.getElements().add(new MoveTo(0, 0));
-                    this.targetPath.getElements().add(new LineTo(0, this.targetShip.getHeight() * CELL_SIZE));
-                    this.targetPath.getElements().add(new LineTo(this.targetShip.getWidth() * CELL_SIZE, this.targetShip.getHeight() * CELL_SIZE));
-                    this.targetPath.getElements().add(new LineTo(this.targetShip.getWidth() * CELL_SIZE, 0));
-                    this.targetPath.getElements().add(new LineTo(0, 0));
+                    Path newPath = Ship.getDraw(this.targetShip.getType());
+                    newPath.setLayoutX(this.targetShip.getTailX() * CELL_SIZE);
+                    newPath.setLayoutY(this.targetShip.getTailY() * CELL_SIZE);
+                    newPath.setStrokeWidth(3);
+                    newPath.setStroke(Color.web("#00f"));
+                    newPath.setFill(Color.rgb(0, 0, 255, 0.05));
+                    Rotate rotation = new Rotate(90, 20,20 ); // Rota 90 grados alrededor de (50, 50)
+                    newPath.getTransforms().add(rotation);
 
-                    this.targetPath.setLayoutX(this.targetShip.getTailX() * CELL_SIZE);
-                    this.targetPath.setLayoutY(this.targetShip.getTailY() * CELL_SIZE);
+                    newPath.setUserData(this.targetShip);
+
+                    panePosition.getChildren().add(newPath);
+                    panePosition.getChildren().remove(this.targetPath);
+                    this.targetPath = newPath;
 
                 } else {
                     this.targetShip.rotate();
@@ -216,25 +223,24 @@ public class PlacementController {
         for (int i = 0; i < 10; i++) {
             ship = playerBoard.getShip(i);
 
-            Path path = new Path();
+            if (ship != null && ship.getType() != null) {
+                Path path = Ship.getDraw(ship.getType());
 
-            path.getElements().add(new MoveTo(0, 0));
-            path.getElements().add(new LineTo(0, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, 0));
-            path.getElements().add(new LineTo(0, 0));
-            path.getElements().add(new ArcTo());
+                if (path != null) {
+                    path.setLayoutX(ship.getTailX() * CELL_SIZE);
+                    path.setLayoutY(ship.getTailY() * CELL_SIZE);
 
-            path.setLayoutX(ship.getTailX() * CELL_SIZE);
-            path.setLayoutY(ship.getTailY() * CELL_SIZE);
+                    path.setStrokeWidth(3);
+                    path.setStroke(Color.web("#00f"));
+                    path.setFill(Color.rgb(0, 0, 255, 0.05));
 
-            path.setStrokeWidth(3);
-            path.setStroke(Color.web("#00f"));
-            path.setFill(Color.rgb(0, 0, 255, 0.05));
+                    path.setUserData(ship);
 
-            path.setUserData(ship);
-
-            panePosition.getChildren().add(path);
+                    panePosition.getChildren().add(path);
+                } else {
+                    System.err.println("Error: Path is null for ship type " + ship.getType());
+                }
+            }
         }
     }
     @FXML
