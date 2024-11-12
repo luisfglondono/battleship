@@ -21,11 +21,6 @@ public class Ship {
         FRIGATE
     }
 
-    public Type getType() {
-        return type;
-    }
-
-
     public enum Direction {
         HORIZONTAL,
         VERTICAL
@@ -112,10 +107,10 @@ public class Ship {
         return tailX <= x && tailX + getWidth() - 1 >= x && tailY <= y && tailY + getHeight() - 1 >= y;
     }
 
-    public static Path getDraw(Type ship){
-        switch (ship) {
+    public Path getDraw(){
+        switch (this.type) {
             case FRIGATE:   //frigate
-                Path frigatePath = new Path(
+                return new Path(
                         new MoveTo(0, 0),
                         new LineTo(20, 4),
                         new ArcTo(250, 40, 0, 20, 36, false, true),
@@ -142,9 +137,8 @@ public class Ship {
                         new ClosePath(),
                         new LineTo(36, 20)
                 );
-                return frigatePath;
             case DESTROYER:  //destroyer
-                Path destroyerPath = new Path(
+                return new Path(
                         new MoveTo(0,6),
                         new LineTo(10,0),
                         new LineTo(40,0),
@@ -193,9 +187,8 @@ public class Ship {
                         new MoveTo(50, 22.5),
                         new LineTo(50,32)
                 );
-                return destroyerPath;
             case SUBMARINE:  //submarine
-                Path submarinePath = new Path(
+                return new Path(
                         new MoveTo(0, 15),
                         new LineTo(40,8),
                         new LineTo(102,3),
@@ -222,9 +215,8 @@ public class Ship {
                         new ArcTo(5, 5, 0, 90, 13, false, true),
                         new ClosePath()
                 );
-                return submarinePath;
             case CARRIER:  //carrier
-                Path carrierPath = new Path(
+                return new Path(
                         new MoveTo(0,9),
                         new LineTo(26,8),
                         new LineTo(36,6),
@@ -302,7 +294,6 @@ public class Ship {
                         new MoveTo(80,30),
                         new ArcTo(2.75,2.75,0,80,31,true,true)
                 );
-                return carrierPath;
             default:
                 return null;
         }

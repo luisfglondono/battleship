@@ -144,23 +144,13 @@ public class PlacementController {
                 movementValid = playerBoard.validatePosition(this.targetShip.getTailX(), this.targetShip.getTailY(), this.targetShip);
 
                 if (movementValid) {
-                    this.targetPath.getElements().clear();
-
-                    Path newPath = Ship.getDraw(this.targetShip.getType());
-                    newPath.setLayoutX(this.targetShip.getTailX() * CELL_SIZE);
-                    newPath.setLayoutY(this.targetShip.getTailY() * CELL_SIZE);
-                    newPath.setStrokeWidth(3);
-                    newPath.setStroke(Color.web("#00f"));
-                    newPath.setFill(Color.rgb(0, 0, 255, 0.05));
-                    Rotate rotation = new Rotate(90, 20,20 ); // Rota 90 grados alrededor de (50, 50)
-                    newPath.getTransforms().add(rotation);
-
-                    newPath.setUserData(this.targetShip);
-
-                    panePosition.getChildren().add(newPath);
-                    panePosition.getChildren().remove(this.targetPath);
-                    this.targetPath = newPath;
-
+                    if (targetShip.getDirection() == Ship.Direction.VERTICAL) {
+                        Rotate rotate = new Rotate(90, 20, 20);
+                        targetPath.getTransforms().add(rotate);
+                    } else {
+                        Rotate rotate = new Rotate(-90, 20, 20);
+                        targetPath.getTransforms().add(rotate);
+                    }
                 } else {
                     this.targetShip.rotate();
                 }
@@ -172,7 +162,7 @@ public class PlacementController {
             this.targetShip = null;
             this.isDragging = false;
 
-        } catch (Exception ignored) {}
+        } catch (Exception ignored){}
     }
 
     public void drawGrid() {
@@ -220,27 +210,28 @@ public class PlacementController {
 
     public void drawShips() {
         Ship ship;
+        Path path;
         for (int i = 0; i < 10; i++) {
             ship = playerBoard.getShip(i);
 
-            if (ship != null && ship.getType() != null) {
-                Path path = Ship.getDraw(ship.getType());
+            path = ship.getDraw();
 
-                if (path != null) {
-                    path.setLayoutX(ship.getTailX() * CELL_SIZE);
-                    path.setLayoutY(ship.getTailY() * CELL_SIZE);
+            path.setLayoutX(ship.getTailX() * CELL_SIZE);
+            path.setLayoutY(ship.getTailY() * CELL_SIZE);
 
-                    path.setStrokeWidth(3);
-                    path.setStroke(Color.web("#00f"));
-                    path.setFill(Color.rgb(0, 0, 255, 0.05));
+            path.setStrokeWidth(2);
+            path.setStroke(Color.web("#00f"));
+            path.setFill(Color.rgb(0, 0, 255, 0.05));
 
-                    path.setUserData(ship);
+            if (ship.getDirection() == Ship.Direction.VERTICAL) {
+                Rotate rotate = new Rotate(90, 20, 20);
 
-                    panePosition.getChildren().add(path);
-                } else {
-                    System.err.println("Error: Path is null for ship type " + ship.getType());
-                }
+                path.getTransforms().add(rotate);
             }
+
+            path.setUserData(ship);
+
+            panePosition.getChildren().add(path);
         }
     }
     @FXML
