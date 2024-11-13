@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -147,24 +148,24 @@ public class MachineViewController {
 
     public void drawShips() {
         Ship ship;
+        Path path;
         for (int i = 0; i < 10; i++) {
             ship = playerBoard.getShip(i);
 
-            Path path = new Path();
-
-            path.getElements().add(new MoveTo(0, 0));
-            path.getElements().add(new LineTo(0, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, 0));
-            path.getElements().add(new LineTo(0, 0));
-            path.getElements().add(new ArcTo());
+            path = ship.getDraw();
 
             path.setLayoutX(ship.getTailX() * CELL_SIZE);
             path.setLayoutY(ship.getTailY() * CELL_SIZE);
 
-            path.setStrokeWidth(3);
+            path.setStrokeWidth(2);
             path.setStroke(Color.web("#00f"));
             path.setFill(Color.rgb(0, 0, 255, 0.05));
+
+            if (ship.getDirection() == Ship.Direction.VERTICAL) {
+                Rotate rotate = new Rotate(90, 20, 20);
+
+                path.getTransforms().add(rotate);
+            }
 
             path.setUserData(ship);
 
@@ -173,24 +174,24 @@ public class MachineViewController {
     }
     public void drawShipsMachine() {
         Ship ship;
+        Path path;
         for (int i = 0; i < 10; i++) {
             ship = machineBoard.getShip(i);
 
-            Path path = new Path();
-
-            path.getElements().add(new MoveTo(0, 0));
-            path.getElements().add(new LineTo(0, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, ship.getHeight() * CELL_SIZE));
-            path.getElements().add(new LineTo(ship.getWidth() * CELL_SIZE, 0));
-            path.getElements().add(new LineTo(0, 0));
-            path.getElements().add(new ArcTo());
+            path = ship.getDraw();
 
             path.setLayoutX(ship.getTailX() * CELL_SIZE);
             path.setLayoutY(ship.getTailY() * CELL_SIZE);
 
-            path.setStrokeWidth(3);
+            path.setStrokeWidth(2);
             path.setStroke(Color.web("#00f"));
             path.setFill(Color.rgb(0, 0, 255, 0.05));
+
+            if (ship.getDirection() == Ship.Direction.VERTICAL) {
+                Rotate rotate = new Rotate(90, 20, 20);
+
+                path.getTransforms().add(rotate);
+            }
 
             path.setUserData(ship);
 
