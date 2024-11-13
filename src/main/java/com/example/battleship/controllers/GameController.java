@@ -3,6 +3,7 @@ package com.example.battleship.controllers;
 import com.example.battleship.models.Game;
 import com.example.battleship.models.Matrix;
 import com.example.battleship.models.Ship;
+import com.example.battleship.models.utilities.serialization;
 import com.example.battleship.views.alert.AlertBox;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import java.util.Random;
 public class GameController {
     private Matrix machineBoard;
     private Matrix playerBoard;
+    private serialization serialization;
     @FXML
     private AnchorPane columnsPane;
 
@@ -39,6 +41,9 @@ public class GameController {
     @FXML
     private AnchorPane rowsPaneMachine;
 
+    @FXML
+    private Label informationLabel;
+
     private Game game;
 
     private final int GRID_SIZE = 400;
@@ -56,122 +61,92 @@ public class GameController {
         this.drawGridMachine();
 
     }
+
     public void handleMousePressed(MouseEvent event) {
 
-        System.out.println("INTENTO " + game.getTurn());
-        int x = (int) event.getX()/40;
-        int y = (int) event.getY()/40;
-        System.out.println("Turno del jugador");
-        System.out.println("coordenada en Y " + x);
-        System.out.println("coordenada en X " + y);
-        System.out.println(game.getTurn());
+        int x = (int) event.getX() / 40;
+        int y = (int) event.getY() / 40;
+        boolean sunkShips;
+        informationLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        informationLabel.setText("¡Capitan " + playerBoard.getUsername() + " has hundido " + machineBoard.getSunkShips() + " barcos!");
         if (game.getTurn() % 2 == 0)
         {
-            if (machineBoard.isWaterHitOrSunk(x,y))
+            if (machineBoard.isWaterHitOrSunk(x, y))
             {
                 new AlertBox().showAlert(
-                   "Error",
-                    "Disparo invalido",
-                   "No puedes disparar 2 veces en el mismo lugar",
-                   Alert.AlertType.ERROR);
+                        "Error",
+                        "Disparo invalido",
+                        "No puedes disparar 2 veces en el mismo lugar",
+                        Alert.AlertType.ERROR);
             }
-            if (machineBoard.getState(x,y) == Matrix.State.EMPTY) {
+            if (machineBoard.getState(x, y) == Matrix.State.EMPTY) {
                 game.setTurn();
                 machineBoard.changeState(x, y, Matrix.State.WATER);
+
             }
-            if (machineBoard.getState(x,y) == Matrix.State.OCCUPIED) {
+            if (machineBoard.getState(x, y) == Matrix.State.OCCUPIED)
+            {
                 game.setTurn();
-                machineBoard.updateShipStateToHit(x,y);
+                machineBoard.updateShipStateToHit(x, y);
                 machineBoard.updateAndCheckShipStateToSunk();
+                informationLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+                informationLabel.setText("¡Capitan " + playerBoard.getUsername() + " has hundido " + machineBoard.getSunkShips() + " barcos!");
+
             }
             machineBoard.getBoard();
         }
         if (game.getTurn() % 2 != 0)
         {
             Random random = new Random();
-            int w,z;
+            int w, z;
             int BOARD_SIZE = 10;
             do {
                 w = random.nextInt(BOARD_SIZE);
                 z = random.nextInt(BOARD_SIZE);
             } while (playerBoard.isWaterHitOrSunk(w, z));
-            if (playerBoard.getState(w,z) == Matrix.State.EMPTY) {
+            if (playerBoard.getState(w, z) == Matrix.State.EMPTY) {
                 game.setTurn();
-                playerBoard.changeState(w,z, Matrix.State.WATER);
+                playerBoard.changeState(w, z, Matrix.State.WATER);
             }
-            if (playerBoard.getState(w,z) == Matrix.State.OCCUPIED) {
+            if (playerBoard.getState(w, z) == Matrix.State.OCCUPIED) {
                 game.setTurn();
-                playerBoard.updateShipStateToHit(w,z);
+                playerBoard.updateShipStateToHit(w, z);
                 playerBoard.updateAndCheckShipStateToSunk();
             }
-        }
-        if(playerBoard.allShipsSunk())
-        {
-            new AlertBox().showAlert(
-                    "¡PERDISTE!",
-                    "¡La maquina ha hundido tu flota!",
-                    "",
-                    Alert.AlertType.INFORMATION
-            );
-            Platform.exit();
-        }
-        if(machineBoard.allShipsSunk())
-        {
-            new AlertBox().showAlert(
-                    "¡GANASTE!",
-                    "¡Felicidades has hundido la flota enemiga!",
-                    "",
-                    Alert.AlertType.INFORMATION
-            );
-            Platform.exit();
-        }
-    }
-    public void drawGridMachine() {
-        Line line;
+            serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
 
-        for (int i = 0; i <= NUMBERS_CELL; i++) {
-            line = new Line(0, i * CELL_SIZE, GRID_SIZE, i * CELL_SIZE);
-            line.setStroke(Color.web("#b4b4ff"));
-            line.setStrokeWidth(1);
-            panePositionMachine.getChildren().add(line);
+            if (playerBoard.allShipsSunk()) {
+                new AlertBox().showAlert(
+                        "¡PERDISTE!",
+                        "¡La maquina ha hundido tu flota!",
+                        "",
+                        Alert.AlertType.INFORMATION
+                );
+                try {
+                    serialization.clearFile(serialization.getRelativePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-
-            line = new Line(i * CELL_SIZE, 0, i * CELL_SIZE, GRID_SIZE);
-            line.setStrokeWidth(1);
-            line.setStroke(Color.web("#b4b4ff"));
-
-            panePositionMachine.getChildren().add(line);
-
-        }
-
-        Label label;
-
-        for (int i = 0; i < NUMBERS_CELL; i++) {
-            char letter = (char) (65 + i);
-
-            label = new Label(String.valueOf(letter));
-            label.setPrefSize(40, 40);
-            label.setAlignment(Pos.CENTER);
-            label.setStyle("-fx-font-size: 18px;");
-
-            AnchorPane.setLeftAnchor(label, i * 40.0);
-            AnchorPane.setTopAnchor(label, 0.0);
-
-            columnsPaneMachine.getChildren().add(label);
-
-            label = new Label(String.valueOf(i + 1));
-            label.setPrefSize(40, 40);
-            label.setAlignment(Pos.CENTER);
-            label.setStyle("-fx-font-size: 18px;");
-
-            AnchorPane.setLeftAnchor(label, 0.0);
-            AnchorPane.setTopAnchor(label, i * 40.0);
-
-
-
-            rowsPaneMachine.getChildren().add(label);
+                Platform.exit();
+            }
+            if (machineBoard.allShipsSunk()) {
+                new AlertBox().showAlert(
+                        "¡GANASTE!",
+                        "¡Felicidades has hundido la flota enemiga!",
+                        "",
+                        Alert.AlertType.INFORMATION
+                );
+                try {
+                    serialization.clearFile(serialization.getRelativePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Platform.exit();
+            }
         }
     }
+
     public void drawGrid() {
         Line line;
 
@@ -241,4 +216,52 @@ public class GameController {
             panePosition.getChildren().add(path);
         }
     }
+    public void drawGridMachine() {
+        Line line;
+
+        for (int i = 0; i <= NUMBERS_CELL; i++) {
+            line = new Line(0, i * CELL_SIZE, GRID_SIZE, i * CELL_SIZE);
+            line.setStroke(Color.web("#b4b4ff"));
+            line.setStrokeWidth(1);
+            panePositionMachine.getChildren().add(line);
+
+
+            line = new Line(i * CELL_SIZE, 0, i * CELL_SIZE, GRID_SIZE);
+            line.setStrokeWidth(1);
+            line.setStroke(Color.web("#b4b4ff"));
+
+            panePositionMachine.getChildren().add(line);
+
+        }
+
+        Label label;
+
+        for (int i = 0; i < NUMBERS_CELL; i++) {
+            char letter = (char) (65 + i);
+
+            label = new Label(String.valueOf(letter));
+            label.setPrefSize(40, 40);
+            label.setAlignment(Pos.CENTER);
+            label.setStyle("-fx-font-size: 18px;");
+
+            AnchorPane.setLeftAnchor(label, i * 40.0);
+            AnchorPane.setTopAnchor(label, 0.0);
+
+            columnsPaneMachine.getChildren().add(label);
+
+            label = new Label(String.valueOf(i + 1));
+            label.setPrefSize(40, 40);
+            label.setAlignment(Pos.CENTER);
+            label.setStyle("-fx-font-size: 18px;");
+
+            AnchorPane.setLeftAnchor(label, 0.0);
+            AnchorPane.setTopAnchor(label, i * 40.0);
+
+
+
+            rowsPaneMachine.getChildren().add(label);
+        }
+    }
 }
+
+

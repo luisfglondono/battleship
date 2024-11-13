@@ -1,8 +1,9 @@
 package com.example.battleship.models;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Ship {
+public class Ship implements Serializable {
     private int tailX;
     private int tailY;
     private int length;
