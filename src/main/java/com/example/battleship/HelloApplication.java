@@ -11,7 +11,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         informationView.getInstance();
     }
-
+    
     public static void main(String[] args) {
         launch();
     }

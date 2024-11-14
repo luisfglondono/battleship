@@ -90,7 +90,6 @@ public class GameController {
                 panePositionMachine.getChildren().add(waterHit);
             }
             if (machineBoard.getState(x,y) == Matrix.State.OCCUPIED) {
-                game.setTurn();
                 machineBoard.updateShipStateToHit(x,y);
                 machineBoard.updateAndCheckShipStateToSunk();
                 informationLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -119,51 +118,52 @@ public class GameController {
                 }
 
             }
-            machineBoard.getBoard();
         }
         if (game.getTurn() % 2 != 0)
         {
-            Random random = new Random();
             int w,z;
-            int BOARD_SIZE = 10;
-            do {
-                w = random.nextInt(BOARD_SIZE);
-                z = random.nextInt(BOARD_SIZE);
-            } while (playerBoard.isWaterHitOrSunk(w, z));
-            if (playerBoard.getState(w,z) == Matrix.State.EMPTY) {
-                game.setTurn();
-                playerBoard.changeState(w,z, Matrix.State.WATER);
-                Path waterHit = drawWaterHit();
-                waterHit.setLayoutX(w * CELL_SIZE);
-                waterHit.setLayoutY(z * CELL_SIZE);
-                panePosition.getChildren().add(waterHit);
-            }
-            if (playerBoard.getState(w,z) == Matrix.State.OCCUPIED) {
-                game.setTurn();
-                playerBoard.updateShipStateToHit(w,z);
-                playerBoard.updateAndCheckShipStateToSunk();
+            do{
+                Random random = new Random();
+                int BOARD_SIZE = 10;
+                do {
+                    w = random.nextInt(BOARD_SIZE);
+                    z = random.nextInt(BOARD_SIZE);
+                } while (playerBoard.isWaterHitOrSunk(w, z));
 
-                panePosition.getChildren().removeIf(node ->
-                        node instanceof Path && ("shipHit".equals(node.getId()) || "shipSunk".equals(node.getId()))
-                );
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
-                        if (playerBoard.getState(i, j) == Matrix.State.SUNK) {
-                            Path shipSunk = drawShipSunk();
-                            shipSunk.setId("shipSunk");
-                            shipSunk.setLayoutX(i * CELL_SIZE);
-                            shipSunk.setLayoutY(j * CELL_SIZE);
-                            panePosition.getChildren().add(shipSunk);
-                        } else if (playerBoard.getState(i, j) == Matrix.State.HIT) {
-                            Path shipHit = drawShipHit();
-                            shipHit.setId("shipHit");
-                            shipHit.setLayoutX(i * CELL_SIZE);
-                            shipHit.setLayoutY(j * CELL_SIZE);
-                            panePosition.getChildren().add(shipHit);
+                if (playerBoard.getState(w,z) == Matrix.State.EMPTY) {
+                    game.setTurn();
+                    playerBoard.changeState(w,z, Matrix.State.WATER);
+                    Path waterHit = drawWaterHit();
+                    waterHit.setLayoutX(w * CELL_SIZE);
+                    waterHit.setLayoutY(z * CELL_SIZE);
+                    panePosition.getChildren().add(waterHit);
+                }
+                if (playerBoard.getState(w,z) == Matrix.State.OCCUPIED) {
+                    playerBoard.updateShipStateToHit(w,z);
+                    playerBoard.updateAndCheckShipStateToSunk();
+
+                    panePosition.getChildren().removeIf(node ->
+                            node instanceof Path && ("shipHit".equals(node.getId()) || "shipSunk".equals(node.getId()))
+                    );
+                    for (int i = 0; i < 10; i++) {
+                        for (int j = 0; j < 10; j++) {
+                            if (playerBoard.getState(i, j) == Matrix.State.SUNK) {
+                                Path shipSunk = drawShipSunk();
+                                shipSunk.setId("shipSunk");
+                                shipSunk.setLayoutX(i * CELL_SIZE);
+                                shipSunk.setLayoutY(j * CELL_SIZE);
+                                panePosition.getChildren().add(shipSunk);
+                            } else if (playerBoard.getState(i, j) == Matrix.State.HIT) {
+                                Path shipHit = drawShipHit();
+                                shipHit.setId("shipHit");
+                                shipHit.setLayoutX(i * CELL_SIZE);
+                                shipHit.setLayoutY(j * CELL_SIZE);
+                                panePosition.getChildren().add(shipHit);
+                            }
                         }
                     }
                 }
-            }
+            }while(playerBoard.isHitOrSunk(w,z));
             serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
 
             if (playerBoard.allShipsSunk()) {
