@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="520.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.PlacementController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="588.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.PlacementController">
     <children>
         <ImageView fitHeight="233.0" fitWidth="478.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -80,6 +81,12 @@
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font></Button>
+            <Label prefHeight="18.0" prefWidth="102.0" text="Digita tu nombre" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textFieldName" prefHeight="26.0" prefWidth="103.0" />
                 <Button mnemonicParsing="false" onAction="#onActionMachineView" style="-fx-border-color: black; -fx-border-width: 3; -fx-background-color: #3887BE; -fx-border-radius: 3;" text="VISTA MÁQUINA" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />

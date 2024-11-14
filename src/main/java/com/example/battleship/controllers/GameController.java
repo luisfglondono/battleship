@@ -3,6 +3,7 @@ package com.example.battleship.controllers;
 import com.example.battleship.models.Game;
 import com.example.battleship.models.Matrix;
 import com.example.battleship.models.Ship;
+import com.example.battleship.models.utilities.serialization;
 import com.example.battleship.views.alert.AlertBox;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ import java.util.Random;
 public class GameController {
     private Matrix machineBoard;
     private Matrix playerBoard;
+    private serialization serialization;
     @FXML
     private AnchorPane columnsPane;
 
@@ -41,6 +43,9 @@ public class GameController {
     @FXML
     private AnchorPane rowsPaneMachine;
 
+    @FXML
+    private Label informationLabel;
+
     private Game game;
 
     private final int GRID_SIZE = 400;
@@ -58,24 +63,23 @@ public class GameController {
         this.drawGridMachine();
 
     }
+
     public void handleMousePressed(MouseEvent event) {
 
-        System.out.println("INTENTO " + game.getTurn());
-        int x = (int) event.getX()/40;
-        int y = (int) event.getY()/40;
-        System.out.println("Turno del jugador");
-        System.out.println("coordenada en Y " + x);
-        System.out.println("coordenada en X " + y);
-        System.out.println(game.getTurn());
+        int x = (int) event.getX() / 40;
+        int y = (int) event.getY() / 40;
+        boolean sunkShips;
+        informationLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        informationLabel.setText("¡Capitan " + playerBoard.getUsername() + " has hundido " + machineBoard.getSunkShips() + " barcos!");
         if (game.getTurn() % 2 == 0)
         {
             if (machineBoard.isWaterHitOrSunk(x,y))
             {
                 new AlertBox().showAlert(
-                   "Error",
-                    "Disparo invalido",
-                   "No puedes disparar 2 veces en el mismo lugar",
-                   Alert.AlertType.ERROR);
+                        "Error",
+                        "Disparo invalido",
+                        "No puedes disparar 2 veces en el mismo lugar",
+                        Alert.AlertType.ERROR);
             }
             if (machineBoard.getState(x,y) == Matrix.State.EMPTY) {
                 game.setTurn();
@@ -89,6 +93,9 @@ public class GameController {
                 game.setTurn();
                 machineBoard.updateShipStateToHit(x,y);
                 machineBoard.updateAndCheckShipStateToSunk();
+                informationLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+                informationLabel.setText("¡Capitan " + playerBoard.getUsername() + " has hundido " + machineBoard.getSunkShips() + " barcos!");
+
 
                 panePositionMachine.getChildren().removeIf(node ->
                         node instanceof Path && ("shipHit".equals(node.getId()) || "shipSunk".equals(node.getId()))
@@ -157,26 +164,37 @@ public class GameController {
                     }
                 }
             }
-        }
-        if(playerBoard.allShipsSunk())
-        {
-            new AlertBox().showAlert(
-                    "¡PERDISTE!",
-                    "¡La maquina ha hundido tu flota!",
-                    "",
-                    Alert.AlertType.INFORMATION
-            );
-            Platform.exit();
-        }
-        if(machineBoard.allShipsSunk())
-        {
-            new AlertBox().showAlert(
-                    "¡GANASTE!",
-                    "¡Felicidades has hundido la flota enemiga!",
-                    "",
-                    Alert.AlertType.INFORMATION
-            );
-            Platform.exit();
+            serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
+
+            if (playerBoard.allShipsSunk()) {
+                new AlertBox().showAlert(
+                        "¡PERDISTE!",
+                        "¡La maquina ha hundido tu flota!",
+                        "",
+                        Alert.AlertType.INFORMATION
+                );
+                try {
+                    serialization.clearFile(serialization.getRelativePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Platform.exit();
+            }
+            if (machineBoard.allShipsSunk()) {
+                new AlertBox().showAlert(
+                        "¡GANASTE!",
+                        "¡Felicidades has hundido la flota enemiga!",
+                        "",
+                        Alert.AlertType.INFORMATION
+                );
+                try {
+                    serialization.clearFile(serialization.getRelativePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Platform.exit();
+            }
         }
     }
     public void drawGridMachine() {

@@ -1,12 +1,13 @@
 package com.example.battleship.models;
 
+import java.io.Serializable;
 import javafx.scene.shape.*;
 
 import java.util.Random;
-
 import static com.example.battleship.models.Ship.Type.*;
 
-public class Ship {
+public class Ship implements Serializable {
+
     private int tailX;
     private int tailY;
     private int length;

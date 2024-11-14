@@ -30,7 +30,7 @@
                         <Insets left="120.0" />
                      </HBox.margin>
                       </ImageView>
-                      <Label prefHeight="35.0" prefWidth="410.0" text="Tú flota">
+                      <Label prefHeight="35.0" prefWidth="330.0" text="Tú flota">
                           <font>
                               <Font name="System Bold" size="24.0" />
                           </font>
@@ -103,5 +103,10 @@
             <Insets />
          </VBox.margin>
       </HBox>
+      <Label fx:id="informationLabel" prefHeight="18.0" prefWidth="710.0">
+         <VBox.margin>
+            <Insets left="300.0" top="15.0" />
+         </VBox.margin>
+      </Label>
     </children>
 </VBox>

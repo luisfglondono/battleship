@@ -1,12 +1,23 @@
 package com.example.battleship.models.utilities;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 public class serialization {
 
+    private static Path relativePath = Paths.get("objectsSerialization.txt");
+    public static String getRelativePath() {return relativePath.toString();}
+
+    public serialization() {
+    }
+
     public static void serializeObjects(String fileName, Object... objects) {
-        try (FileOutputStream fos = new FileOutputStream(fileName);
+        String path = getRelativePath();
+        File file = new File(path);
+
+        try (FileOutputStream fos = new FileOutputStream(file);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             for (Object obj : objects) {
                 oos.writeObject(obj);
@@ -32,5 +43,10 @@ public class serialization {
             throw new RuntimeException(e);
         }
         return objects;
+    }
+    public static void clearFile(String fileName) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(fileName)) {
+
+        }
     }
 }

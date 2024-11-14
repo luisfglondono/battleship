@@ -1,11 +1,28 @@
 package com.example.battleship.models;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Matrix {
+public class Matrix implements Serializable{
     private final ArrayList<ArrayList<State>> board = new ArrayList<>();
     private final List<Ship> ships = new ArrayList<>();
     private final int BOARD_SIZE = 10;
+    private String username;
+    private int sunkShips;
+
+    public void setSunkShips() {
+        this.sunkShips += 1;
+    }
+    public int getSunkShips() {
+        return this.sunkShips;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getUsername() {
+        return this.username;
+    }
 
     public enum State {
         EMPTY,
@@ -122,7 +139,7 @@ public class Matrix {
         System.out.println();
     }
     public boolean isWaterHitOrSunk(int x, int y) {
-        State state = board.get(x).get(y);
+        State state = board.get(y).get(x);
         return state == State.WATER || state == State.HIT || state == State.SUNK;
     }
     public void changeState(int x, int y, State newState) {
@@ -173,6 +190,7 @@ public class Matrix {
                     int sunkY = direction == Ship.Direction.VERTICAL ? shipY + i : shipY;
                     changeState(sunkX, sunkY, State.SUNK);
                 }
+                setSunkShips();
             }
         }
     }

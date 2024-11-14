@@ -6,9 +6,12 @@ import com.example.battleship.views.GameView;
 import com.example.battleship.views.MachineViewView;
 import com.example.battleship.views.PlacementView;
 import com.example.battleship.views.alert.AlertBox;
+import com.example.battleship.models.utilities.serialization;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -31,12 +34,16 @@ public class PlacementController {
     @FXML
     private AnchorPane rowsPane;
 
+    @FXML
+    private TextField textFieldName;
+
     private final int GRID_SIZE = 400;
     private final int NUMBERS_CELL = 10;
     private final int CELL_SIZE = GRID_SIZE / NUMBERS_CELL;
 
     private Matrix playerBoard;
     private Matrix machineBoard;
+    private serialization serialization;
 
     private boolean movementValid;
     private int positionInitialX;
@@ -54,6 +61,7 @@ public class PlacementController {
     }
     public void initialize() {
         instance = this;
+        serialization = new serialization();
         playerBoard = new Matrix();
         machineBoard = new Matrix();
         movementValid = false;
@@ -65,6 +73,7 @@ public class PlacementController {
         panePosition.setOnMousePressed(this::handleMousePressed);
         panePosition.setOnMouseDragged(this::handleMouseDragged);
         panePosition.setOnMouseReleased(this::handleMouseReleased);
+        serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
     }
 
     private void handleMouseMoved(MouseEvent event) {
@@ -236,36 +245,59 @@ public class PlacementController {
     }
     @FXML
     void onActionMachineView(ActionEvent event) {
+        boolean nameBolean = textFieldName.getText().isEmpty();
         AlertBox alertBox = new AlertBox();
         boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres ver ambos tableros?.");
-        if (confirmed)
+        if (confirmed && !nameBolean)
         {
             try
             {
                 MachineViewView machineView = new MachineViewView(machineBoard, playerBoard);
+                playerBoard.setUsername(textFieldName.getText());
                 machineView.show();
                 ((Stage) panePosition.getScene().getWindow()).close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-
+        else {
+            if (nameBolean) {
+                new AlertBox().showAlert(
+                        "Error",
+                        "No puedes continuar",
+                        "Debes digitar un nombre para poder iniciar.",
+                        Alert.AlertType.ERROR
+                );
+            }
+        }
     }
 
     @FXML
     void onActionPlayButton(ActionEvent event) {
+        boolean nameBolean = textFieldName.getText().isEmpty();
         AlertBox alertBox = new AlertBox();
         boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres comenzar una partida?, (Los barcos no se podrán mover una vez iniciada la partida)");
-        if (confirmed)
+        if (confirmed && !nameBolean)
         {
             try
             {
+                serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
                 GameView gameView = new GameView(machineBoard, playerBoard);
+                playerBoard.setUsername(textFieldName.getText());
                 gameView.show();
                 ((Stage) panePosition.getScene().getWindow()).close();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+        else{
+            if (nameBolean){
+                new AlertBox().showAlert(
+                        "Error",
+                        "No puedes continuar",
+                        "Debes digitar un nombre para poder iniciar.",
+                        Alert.AlertType.ERROR
+                );
             }
         }
     }
