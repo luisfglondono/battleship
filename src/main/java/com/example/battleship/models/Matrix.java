@@ -142,6 +142,10 @@ public class Matrix implements Serializable{
         State state = board.get(y).get(x);
         return state == State.WATER || state == State.HIT || state == State.SUNK;
     }
+    public boolean isHitOrSunk(int x, int y) {
+        State state = board.get(y).get(x);
+        return state == State.HIT || state == State.SUNK;
+    }
     public void changeState(int x, int y, State newState) {
         board.get(y).set(x, newState);
     }
