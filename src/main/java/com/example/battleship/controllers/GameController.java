@@ -61,6 +61,7 @@ public class GameController {
         this.drawGrid();
         this.drawShips();
         this.drawGridMachine();
+        this.drawHitsContinue();
 
     }
 
@@ -380,5 +381,51 @@ public class GameController {
         figure.setFill(Color.rgb(255, 208, 0,0.95));
 
         return figure;
+    }
+
+    public void drawHitsContinue() {
+        //Redibuja todos los hits, de agua, hit normal y hundido, para ambos tableros luego de continuar con el juego anterior
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (machineBoard.getState(i, j) == Matrix.State.SUNK) {
+                    Path shipSunk = drawShipSunk();
+                    shipSunk.setId("shipSunk");
+                    shipSunk.setLayoutX(i * CELL_SIZE);
+                    shipSunk.setLayoutY(j * CELL_SIZE);
+                    panePositionMachine.getChildren().add(shipSunk);
+                } else if (machineBoard.getState(i, j) == Matrix.State.HIT) {
+                    Path shipHit = drawShipHit();
+                    shipHit.setId("shipHit");
+                    shipHit.setLayoutX(i * CELL_SIZE);
+                    shipHit.setLayoutY(j * CELL_SIZE);
+                    panePositionMachine.getChildren().add(shipHit);
+                }
+                if (machineBoard.getState(i,j) == Matrix.State.WATER) {
+                    Path waterHit = drawWaterHit();
+                    waterHit.setLayoutX(i * CELL_SIZE);
+                    waterHit.setLayoutY(j * CELL_SIZE);
+                    panePositionMachine.getChildren().add(waterHit);
+                }
+                if (playerBoard.getState(i, j) == Matrix.State.SUNK) {
+                    Path shipSunk = drawShipSunk();
+                    shipSunk.setId("shipSunk");
+                    shipSunk.setLayoutX(i * CELL_SIZE);
+                    shipSunk.setLayoutY(j * CELL_SIZE);
+                    panePosition.getChildren().add(shipSunk);
+                } else if (playerBoard.getState(i, j) == Matrix.State.HIT) {
+                    Path shipHit = drawShipHit();
+                    shipHit.setId("shipHit");
+                    shipHit.setLayoutX(i * CELL_SIZE);
+                    shipHit.setLayoutY(j * CELL_SIZE);
+                    panePosition.getChildren().add(shipHit);
+                }
+                if (playerBoard.getState(i,j) == Matrix.State.WATER) {
+                    Path waterHit = drawWaterHit();
+                    waterHit.setLayoutX(i * CELL_SIZE);
+                    waterHit.setLayoutY(j * CELL_SIZE);
+                    panePosition.getChildren().add(waterHit);
+                }
+            }
+        }
     }
 }
