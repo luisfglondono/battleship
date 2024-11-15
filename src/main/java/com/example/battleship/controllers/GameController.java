@@ -68,6 +68,11 @@ public class GameController {
     @FXML
     private Label informationLabel;
     /**
+     * Label for displaying username.
+     */
+    @FXML
+    private Label nameLabel;
+    /**
      * Game instance for managing game state.
      */
     private Game game;
@@ -100,6 +105,7 @@ public class GameController {
         this.drawGridMachine();
         this.drawHitsContinue();
 
+        nameLabel.setText(playerBoard.getUsername());
     }
     /**
      * Handles the mouse pressed event on the machine's board.
@@ -109,12 +115,9 @@ public class GameController {
      * @param event the MouseEvent triggered by the user
      */
     public void handleMousePressed(MouseEvent event) {
-
         int x = (int) event.getX() / 40;
         int y = (int) event.getY() / 40;
-        boolean sunkShips;
-        informationLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-        informationLabel.setText("¡Capitan " + playerBoard.getUsername() + " has hundido " + machineBoard.getSunkShips() + " barcos!");
+        informationLabel.setText("¡Has hundido " + machineBoard.getSunkShips() + " barcos!");
         if (game.getTurn() % 2 == 0)
         {
             if (machineBoard.isWaterHitOrSunk(x,y))
@@ -133,12 +136,11 @@ public class GameController {
                 waterHit.setLayoutY(y * CELL_SIZE);
                 panePositionMachine.getChildren().add(waterHit);
             }
+
             if (machineBoard.getState(x,y) == Matrix.State.OCCUPIED) {
                 machineBoard.updateShipStateToHit(x,y);
                 machineBoard.updateAndCheckShipStateToSunk();
-                informationLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-                informationLabel.setText("¡Capitan " + playerBoard.getUsername() + " has hundido " + machineBoard.getSunkShips() + " barcos!");
-
+                informationLabel.setText("¡Has hundido " + machineBoard.getSunkShips() + " barcos!");
 
                 panePositionMachine.getChildren().removeIf(node ->
                         node instanceof Path && ("shipHit".equals(node.getId()) || "shipSunk".equals(node.getId()))
@@ -255,17 +257,15 @@ public class GameController {
 
         for (int i = 0; i <= NUMBERS_CELL; i++) {
             line = new Line(0, i * CELL_SIZE, GRID_SIZE, i * CELL_SIZE);
-            line.setStroke(Color.web("#b4b4ff"));
+            line.setStroke(Color.web("#6ded49"));
             line.setStrokeWidth(1);
             panePositionMachine.getChildren().add(line);
-
 
             line = new Line(i * CELL_SIZE, 0, i * CELL_SIZE, GRID_SIZE);
             line.setStrokeWidth(1);
-            line.setStroke(Color.web("#b4b4ff"));
+            line.setStroke(Color.web("#6ded49"));
 
             panePositionMachine.getChildren().add(line);
-
         }
 
         Label label;
@@ -276,7 +276,7 @@ public class GameController {
             label = new Label(String.valueOf(letter));
             label.setPrefSize(40, 40);
             label.setAlignment(Pos.CENTER);
-            label.setStyle("-fx-font-size: 18px;");
+            label.setStyle("-fx-font-size: 18px; -fx-text-fill: #6ded49");
 
             AnchorPane.setLeftAnchor(label, i * 40.0);
             AnchorPane.setTopAnchor(label, 0.0);
@@ -286,12 +286,10 @@ public class GameController {
             label = new Label(String.valueOf(i + 1));
             label.setPrefSize(40, 40);
             label.setAlignment(Pos.CENTER);
-            label.setStyle("-fx-font-size: 18px;");
+            label.setStyle("-fx-font-size: 18px; -fx-text-fill: #6ded49");
 
             AnchorPane.setLeftAnchor(label, 0.0);
             AnchorPane.setTopAnchor(label, i * 40.0);
-
-
 
             rowsPaneMachine.getChildren().add(label);
         }
