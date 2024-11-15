@@ -3,34 +3,43 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox alignment="CENTER" prefHeight="263.0" prefWidth="271.0" spacing="20.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.informationController">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
+   <ImageView fitHeight="113.0" fitWidth="453.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@images/logo.png" />
+      </image>
+   </ImageView>
 
-  <Label fx:id="welcomeText" prefHeight="82.0" prefWidth="178.0" text="Desea continuar con el juego actual (si selecciona &quot;NO&quot; se iniciará un juego nuevo)" textAlignment="CENTER" wrapText="true" />
-   <HBox prefHeight="46.0" prefWidth="232.0">
+  <Label fx:id="welcomeText" alignment="CENTER" prefHeight="28.0" prefWidth="248.0" text="BIENVENIDO AL JUEGO" textAlignment="CENTER" wrapText="true">
+      <font>
+         <Font name="System Bold" size="19.0" />
+      </font></Label>
+   <HBox alignment="TOP_CENTER" prefHeight="42.0" prefWidth="382.0">
       <children>
-        <Button onAction="#onYesButton" text="SI">
+         <Button mnemonicParsing="false" onAction="#onPlayButton" text="Jugar">
             <HBox.margin>
-               <Insets right="20.0" />
+               <Insets right="60.0" />
+            </HBox.margin></Button>
+         <Button mnemonicParsing="false" onAction="#onInformationButton" text="Instrucciones">
+            <HBox.margin>
+               <Insets />
             </HBox.margin>
          </Button>
-         <Button mnemonicParsing="false" onAction="#onNoButton" text="NO" />
       </children>
       <VBox.margin>
          <Insets />
       </VBox.margin>
       <padding>
-         <Insets left="75.0" top="17.0" />
+         <Insets top="7.0" />
       </padding>
    </HBox>
-   <Button mnemonicParsing="false" onAction="#onInformationButton" text="?">
-      <VBox.margin>
-         <Insets left="210.0" />
-      </VBox.margin>
-   </Button>
 </VBox>

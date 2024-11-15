@@ -3,27 +3,63 @@ package com.example.battleship.models;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Represents the game board and manages the state of the game.
+ */
 public class Matrix implements Serializable{
+    /**
+     * The game board, represented as a 2D array of states.
+     */
     private final ArrayList<ArrayList<State>> board = new ArrayList<>();
+    /**
+     * The list of ships on the board.
+     */
     private final List<Ship> ships = new ArrayList<>();
+    /**
+     * The size of the game board.
+     */
     private final int BOARD_SIZE = 10;
+    /**
+     * The username of the player.
+     */
     private String username;
+    /**
+     * The number of sunk ships.
+     */
     private int sunkShips;
-
+    /**
+     * Increments the count of sunk ships by one.
+     */
     public void setSunkShips() {
         this.sunkShips += 1;
     }
+    /**
+     * Returns the number of sunk ships.
+     *
+     * @return the number of sunk ships
+     */
     public int getSunkShips() {
         return this.sunkShips;
     }
-
+    /**
+     * Sets the username of the player.
+     *
+     * @param username the username of the player
+     */
     public void setUsername(String username) {
         this.username = username;
     }
+    /**
+     * Returns the username of the player.
+     *
+     * @return the username of the player
+     */
     public String getUsername() {
         return this.username;
     }
-
+    /**
+     * Represents the state of a cell on the game board.
+     */
     public enum State {
         EMPTY,
         OCCUPIED,
@@ -31,7 +67,9 @@ public class Matrix implements Serializable{
         HIT,
         SUNK
     }
-
+    /**
+     * Constructs a new Matrix instance and initializes the game board and ships.
+     */
     public Matrix() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             board.add(new ArrayList<>());
@@ -56,15 +94,26 @@ public class Matrix implements Serializable{
             ship.setPosition(x, y);
         }
     }
-
+    /**
+     * Returns the ship at the specified index.
+     *
+     * @param i the index of the ship
+     * @return the ship at the specified index
+     */
     public Ship getShip(int i) {
         return ships.get(i);
     }
-
+    /**
+     * Returns the list of ships on the board.
+     *
+     * @return the list of ships
+     */
     public List<Ship> getShips() {
         return ships;
     }
-
+    /**
+     * Initializes the ships on the board.
+     */
     public void initializeShips() {
         Map<Ship.Type, Integer> shipTypes = new HashMap<>();
         shipTypes.put(Ship.Type.CARRIER, 1);
@@ -78,7 +127,14 @@ public class Matrix implements Serializable{
             }
         }
     }
-
+    /**
+     * Places a ship on the board at the specified coordinates.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param ship the ship to be placed
+     * @return true if the ship was successfully placed, false otherwise
+     */
     public boolean putShip(int x, int y, Ship ship) {
         Ship.Direction direction = ship.getDirection();
         int length = ship.getLength();
@@ -97,7 +153,14 @@ public class Matrix implements Serializable{
 
         return true;
     }
-
+    /**
+     * Validates if a ship can be placed at the specified coordinates.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param ship the ship to be placed
+     * @return true if the position is valid, false otherwise
+     */
     public boolean validatePosition(int x, int y, Ship ship) {
         Ship.Direction direction = ship.getDirection();
         int length = ship.getLength();
@@ -114,7 +177,13 @@ public class Matrix implements Serializable{
 
         return true;
     }
-
+    /**
+     * Removes a ship from the board at the specified coordinates.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param ship the ship to be removed
+     */
     public void removeShip(int x, int y, Ship ship) {
         Ship.Direction direction = ship.getDirection();
         int length = ship.getLength();
@@ -128,7 +197,9 @@ public class Matrix implements Serializable{
             board.get(r).set(c, State.EMPTY);
         }
     }
-
+    /**
+     * Prints the current state of the game board to the console.
+     */
     public void getBoard() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -138,20 +209,54 @@ public class Matrix implements Serializable{
         }
         System.out.println();
     }
+    /**
+     * Checks if the specified coordinates are in a state of water, hit, or sunk.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @return true if the state is water, hit, or sunk, false otherwise
+     */
     public boolean isWaterHitOrSunk(int x, int y) {
         State state = board.get(y).get(x);
         return state == State.WATER || state == State.HIT || state == State.SUNK;
     }
+    /**
+     * Checks if the specified coordinates are in a state of hit or sunk.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @return true if the state is hit or sunk, false otherwise
+     */
     public boolean isHitOrSunk(int x, int y) {
         State state = board.get(y).get(x);
         return state == State.HIT || state == State.SUNK;
     }
+    /**
+     * Changes the state of the specified coordinates on the board.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param newState the new state to be set
+     */
     public void changeState(int x, int y, State newState) {
         board.get(y).set(x, newState);
     }
+    /**
+     * Returns the state of the specified coordinates on the board.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @return the state of the specified coordinates
+     */
     public State getState(int x, int y) {
         return board.get(y).get(x);
     }
+    /**
+     * Updates the state of the ship at the specified coordinates to hit.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     */
     public void updateShipStateToHit(int x, int y) {
         for (Ship ship : ships) {
             int shipX = ship.getTailX();
@@ -170,6 +275,9 @@ public class Matrix implements Serializable{
             }
         }
     }
+    /**
+     * Updates the state of the ship to sunk if all its parts are hit.
+     */
     public void updateAndCheckShipStateToSunk() {
         for (Ship ship : ships) {
             int shipX = ship.getTailX();
@@ -198,6 +306,11 @@ public class Matrix implements Serializable{
             }
         }
     }
+    /**
+     * Checks if all ships on the board are sunk.
+     *
+     * @return true if all ships are sunk, false otherwise
+     */
     public boolean allShipsSunk() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {

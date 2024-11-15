@@ -24,41 +24,97 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class PlacementController {
+    /**
+     * Singleton instance of the PlacementController.
+     */
     private static PlacementController instance;
+    /**
+     * AnchorPane for displaying the columns.
+     */
     @FXML
     private AnchorPane columnsPane;
-
+    /**
+     * AnchorPane for positioning elements.
+     */
     @FXML
     private AnchorPane panePosition;
-
+    /**
+     * AnchorPane for displaying the rows.
+     */
     @FXML
     private AnchorPane rowsPane;
-
+    /**
+     * TextField for entering the player's name.
+     */
     @FXML
     private TextField textFieldName;
-
+    /**
+     * Size of the grid in pixels.
+     */
     private final int GRID_SIZE = 400;
+    /**
+     * Number of cells in the grid.
+     */
     private final int NUMBERS_CELL = 10;
+    /**
+     * Size of each cell in the grid.
+     */
     private final int CELL_SIZE = GRID_SIZE / NUMBERS_CELL;
-
+    /**
+     * Matrix representing the player's board.
+     */
     private Matrix playerBoard;
+    /**
+     * Matrix representing the machine's board.
+     */
     private Matrix machineBoard;
+    /**
+     * Serialization utility for saving and loading game state.
+     */
     private serialization serialization;
-
+    /**
+     * Flag indicating whether the current movement is valid.
+     */
     private boolean movementValid;
+    /**
+     * Initial X position of the dragged element.
+     */
     private int positionInitialX;
+    /**
+     * Initial Y position of the dragged element.
+     */
     private int positionInitialY;
+    /**
+     * Flag indicating whether an element is being dragged.
+     */
     private boolean isDragging;
+    /**
+     * Path representing the target element being dragged.
+     */
     private Path targetPath;
+    /**
+     * Ship object representing the target ship being manipulated.
+     */
     private Ship targetShip;
-
+    /**
+     * Returns the singleton instance of the PlacementController.
+     *
+     * @return the singleton instance of PlacementController
+     */
     public static PlacementController getInstance() {
         return instance;
     }
+    /**
+     * Shows the current stage.
+     */
     public void show() {
         Stage stage = (Stage) panePosition.getScene().getWindow();
         stage.show();
     }
+    /**
+     * Initializes the PlacementController.
+     * Sets up the instance, serialization, player and machine boards, and event handlers.
+     */
     public void initialize() {
         instance = this;
         serialization = new serialization();
@@ -75,7 +131,11 @@ public class PlacementController {
         panePosition.setOnMouseReleased(this::handleMouseReleased);
         serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
     }
-
+    /**
+     * Handles mouse moved events.
+     *
+     * @param event the MouseEvent
+     */
     private void handleMouseMoved(MouseEvent event) {
         try {
             this.targetPath = (Path) event.getTarget();
@@ -85,7 +145,11 @@ public class PlacementController {
             panePosition.setCursor(Cursor.DEFAULT);
         }
     }
-
+    /**
+     * Handles mouse pressed events.
+     *
+     * @param event the MouseEvent
+     */
     public void handleMousePressed(MouseEvent event) {
         try {
             this.targetPath = (Path) event.getTarget();
@@ -100,7 +164,11 @@ public class PlacementController {
             this.targetPath.setStroke(Color.GREEN);
         } catch (Exception ignored) {}
     }
-
+    /**
+     * Handles mouse dragged events.
+     *
+     * @param event the MouseEvent
+     */
     public void handleMouseDragged(MouseEvent event) {
         try {
 
@@ -128,7 +196,11 @@ public class PlacementController {
 
         } catch (Exception ignored) {}
     }
-
+    /**
+     * Handles mouse released events.
+     *
+     * @param event the MouseEvent
+     */
     public void handleMouseReleased(MouseEvent event) {
         try {
             this.targetPath.setStroke(Color.web("#00f"));
@@ -173,7 +245,9 @@ public class PlacementController {
 
         } catch (Exception ignored){}
     }
-
+    /**
+     * Draws the grid on the pane.
+     */
     public void drawGrid() {
         Line line;
 
@@ -216,7 +290,9 @@ public class PlacementController {
             rowsPane.getChildren().add(label);
         }
     }
-
+    /**
+     * Draws the ships on the pane.
+     */
     public void drawShips() {
         Ship ship;
         Path path;
@@ -243,6 +319,11 @@ public class PlacementController {
             panePosition.getChildren().add(path);
         }
     }
+    /**
+     * Handles the action event for viewing both boards.
+     *
+     * @param event the ActionEvent triggered by the user
+     */
     @FXML
     void onActionMachineView(ActionEvent event) {
         boolean nameBolean = textFieldName.getText().isEmpty();
@@ -271,7 +352,11 @@ public class PlacementController {
             }
         }
     }
-
+    /**
+     * Handles the action event for starting a new game.
+     *
+     * @param event the ActionEvent triggered by the user
+     */
     @FXML
     void onActionPlayButton(ActionEvent event) {
         boolean nameBolean = textFieldName.getText().isEmpty();
