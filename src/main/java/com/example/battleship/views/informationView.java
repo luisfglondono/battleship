@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * The informacionView class represents the view for displaying information.
+ * The informationView class represents the view for displaying information.
  * It loads the FXML layout and initializes the corresponding controller.
  *
  * @version 1.0
@@ -22,7 +22,7 @@ public class informationView extends Stage
     private informationController informationController;
 
     /**
-     * Constructor for informacionView.
+     * Constructor for informationView.
      * Loads the FXML layout and initializes the controller.
      *
      * @throws IOException if the FXML file cannot be loaded
@@ -54,12 +54,12 @@ public class informationView extends Stage
      * @throws IOException if the FXML file cannot be loaded
      */
     public static informationView getInstance() throws IOException {
-        return GameViewHolder.INSTANCE = new informationView();
+        return InformationViewHolder.INSTANCE = new informationView();
     }
     /**
      * Holder class for the singleton instance of informationView.
      */
-    private static class GameViewHolder {
+    private static class InformationViewHolder {
         private static informationView INSTANCE;
     }
 }
