@@ -4,8 +4,11 @@ import com.example.battleship.models.Game;
 import com.example.battleship.models.Matrix;
 import com.example.battleship.models.Ship;
 import com.example.battleship.models.utilities.serialization;
+import com.example.battleship.views.PlacementView;
 import com.example.battleship.views.alert.AlertBox;
+import com.example.battleship.views.informationView;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -17,9 +20,15 @@ import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Random;
 
 public class GameController {
+    /**
+     * Label for displaying the current turn in the game.
+     */
+    @FXML
+    private Label labelTurnInGame;
     /**
      * Matrix representing the machine's board.
      */
@@ -95,6 +104,7 @@ public class GameController {
      * @param machineBoard the machine's board
      * @param playerBoard the player's board
      */
+
     public void setBoards(Matrix machineBoard, Matrix playerBoard) {
         this.machineBoard = machineBoard;
         this.playerBoard = playerBoard;
@@ -104,8 +114,30 @@ public class GameController {
         this.drawShips();
         this.drawGridMachine();
         this.drawHitsContinue();
-
         nameLabel.setText(playerBoard.getUsername());
+    }
+    /**
+     * Handles the action event for starting a new game.
+     * Displays a confirmation dialog to the user. If the user confirms,
+     * it clears the current game state, opens the information view, and closes the current window.
+     *
+     * @param event the ActionEvent triggered by the user
+     */
+    @FXML
+    void OnActionNewGame(ActionEvent event) {
+        AlertBox alertBox = new AlertBox();
+        boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres comenzar un nuevo juego?, (se perderá el progreso actual)");
+        if (confirmed)
+        {
+            try {
+                serialization.clearFile(serialization.getRelativePath());
+                informationView infoView = informationView.getInstance();
+                infoView.show();
+                ((Stage) nameLabel.getScene().getWindow()).close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     /**
      * Handles the mouse pressed event on the machine's board.
@@ -135,13 +167,16 @@ public class GameController {
                 waterHit.setLayoutX(x * CELL_SIZE);
                 waterHit.setLayoutY(y * CELL_SIZE);
                 panePositionMachine.getChildren().add(waterHit);
+                labelTurnInGame.setText("TURNO DE: Maquina");
+                System.out.println("TURNO DE: Maquina");
             }
 
             if (machineBoard.getState(x,y) == Matrix.State.OCCUPIED) {
                 machineBoard.updateShipStateToHit(x,y);
                 machineBoard.updateAndCheckShipStateToSunk();
                 informationLabel.setText("¡Has hundido " + machineBoard.getSunkShips() + " barcos!");
-
+                labelTurnInGame.setText("TURNO DE: " + playerBoard.getUsername());
+                System.out.println("TURNO DE: " + playerBoard.getUsername());
                 panePositionMachine.getChildren().removeIf(node ->
                         node instanceof Path && ("shipHit".equals(node.getId()) || "shipSunk".equals(node.getId()))
                 );
@@ -183,11 +218,14 @@ public class GameController {
                     waterHit.setLayoutX(w * CELL_SIZE);
                     waterHit.setLayoutY(z * CELL_SIZE);
                     panePosition.getChildren().add(waterHit);
+                    labelTurnInGame.setText("TURNO DE: " + playerBoard.getUsername());
+                    System.out.println("TURNO DE: " + playerBoard.getUsername());
                 }
                 if (playerBoard.getState(w,z) == Matrix.State.OCCUPIED) {
                     playerBoard.updateShipStateToHit(w,z);
                     playerBoard.updateAndCheckShipStateToSunk();
-
+                    labelTurnInGame.setText("TURNO DE: Maquina");
+                    System.out.println("TURNO DE: Maquina");
                     panePosition.getChildren().removeIf(node ->
                             node instanceof Path && ("shipHit".equals(node.getId()) || "shipSunk".equals(node.getId()))
                     );
@@ -217,33 +255,33 @@ public class GameController {
 
         if (playerBoard.allShipsSunk())
         {
+            try {
+                serialization.clearFile(serialization.getRelativePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            labelTurnInGame.setText("TURNO DE: Maquina");
             new AlertBox().showAlert(
                     "¡PERDISTE!",
                     "¡La maquina ha hundido tu flota!",
                     "",
                     Alert.AlertType.INFORMATION
             );
+            Platform.exit();
+        }
+        if (machineBoard.allShipsSunk())
+        {
             try {
                 serialization.clearFile(serialization.getRelativePath());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            Platform.exit();
-        }
-        if (machineBoard.allShipsSunk())
-        {
             new AlertBox().showAlert(
                     "¡GANASTE!",
                     "¡Felicidades has hundido la flota enemiga!",
                     "",
                     Alert.AlertType.INFORMATION
             );
-            try {
-                serialization.clearFile(serialization.getRelativePath());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             Platform.exit();
         }
     }
