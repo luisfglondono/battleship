@@ -29,37 +29,35 @@ public class informationView extends Stage
      */
     public informationView() throws IOException
     {
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/example/battleship/information-view.fxml")
-        );
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/battleship/information-view.fxml"));
         Parent root = loader.load();
-        // se usa para conectar la vista de Game con el controlador de game
         this.informationController = loader.getController();
         this.setTitle("Battle ship");
         this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/battleship/images/yate.png")));
         Scene scene = new Scene(root);
         this.setScene(scene);
         this.show();
+        this.informationController.checkAndLoadGame();
     }
     /**
      * Gets the controller associated with this view.
      *
-     * @return the informacionController instance
+     * @return the informationController instance
      */
     public informationController getGameController() {
         return this.informationController;
     }
     /**
-     * Gets the singleton instance of informacionView.
+     * Gets the singleton instance of informationView.
      *
-     * @return the singleton instance of informacionView
+     * @return the singleton instance of informationView
      * @throws IOException if the FXML file cannot be loaded
      */
     public static informationView getInstance() throws IOException {
         return GameViewHolder.INSTANCE = new informationView();
     }
     /**
-     * Holder class for the singleton instance of informacionView.
+     * Holder class for the singleton instance of informationView.
      */
     private static class GameViewHolder {
         private static informationView INSTANCE;

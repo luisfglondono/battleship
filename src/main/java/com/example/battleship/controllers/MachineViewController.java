@@ -18,35 +18,66 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
+/**
+ * Controller class for handling the machine view in the Battleship game.
+ */
 public class MachineViewController {
+    /**
+     * Matrix representing the machine's board.
+     */
     private Matrix machineBoard;
+    /**
+     * Matrix representing the machine's board.
+     */
     private Matrix playerBoard;
+    /**
+     * AnchorPane for displaying the columns.
+     */
     @FXML
     private AnchorPane columnsPane;
-
+    /**
+     * AnchorPane for positioning elements.
+     */
     @FXML
     private AnchorPane panePosition;
-
+    /**
+     * AnchorPane for displaying the rows.
+     */
     @FXML
     private AnchorPane rowsPane;
-
+    /**
+     * AnchorPane for displaying the machine's columns.
+     */
     @FXML
     private AnchorPane columnsPaneMachine;
-
-
+    /**
+     * AnchorPane for positioning machine elements.
+     */
     @FXML
     private AnchorPane panePositionMachine;
-
-
+    /**
+     * AnchorPane for displaying the machine's rows.
+     */
     @FXML
     private AnchorPane rowsPaneMachine;
-
-
+    /**
+     * Size of the grid in pixels.
+     */
     private final int GRID_SIZE = 400;
+    /**
+     * Number of cells in the grid.
+     */
     private final int NUMBERS_CELL = 10;
+    /**
+     * Size of each cell in the grid.
+     */
     private final int CELL_SIZE = GRID_SIZE / NUMBERS_CELL;
-
+    /**
+     * Sets the boards for the machine and player.
+     *
+     * @param machineBoard the machine's board
+     * @param playerBoard the player's board
+     */
     public void setBoards(Matrix machineBoard, Matrix playerBoard) {
         this.machineBoard = machineBoard;
         this.playerBoard = playerBoard;
@@ -57,6 +88,9 @@ public class MachineViewController {
         this.drawShipsMachine();
 
     }
+    /**
+     * Draws the grid for the machine's board.
+     */
     public void drawGridMachine() {
         Line line;
 
@@ -103,6 +137,9 @@ public class MachineViewController {
             rowsPaneMachine.getChildren().add(label);
         }
     }
+    /**
+     * Draws the grid for the player's board.
+     */
     public void drawGrid() {
         Line line;
 
@@ -145,7 +182,9 @@ public class MachineViewController {
             rowsPane.getChildren().add(label);
         }
     }
-
+    /**
+     * Draws the ships on the player's board.
+     */
     public void drawShips() {
         Ship ship;
         Path path;
@@ -172,6 +211,9 @@ public class MachineViewController {
             panePosition.getChildren().add(path);
         }
     }
+    /**
+     * Draws the ships on the machine's board.
+     */
     public void drawShipsMachine() {
         Ship ship;
         Path path;
@@ -198,6 +240,11 @@ public class MachineViewController {
             panePositionMachine.getChildren().add(path);
         }
     }
+    /**
+     * Handles the action event for returning to the previous window.
+     *
+     * @param event the ActionEvent triggered by the user
+     */
     @FXML
     void onActionLastWindow(ActionEvent event) {
         AlertBox alertBox = new AlertBox();
@@ -212,7 +259,11 @@ public class MachineViewController {
         }
 
     }
-
+    /**
+     * Handles the action event for proceeding to the next window.
+     *
+     * @param event the ActionEvent triggered by the user
+     */
     @FXML
     void onActionNextWindow(ActionEvent event) {
         AlertBox alertBox = new AlertBox();

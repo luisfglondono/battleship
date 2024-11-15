@@ -27,13 +27,16 @@
                               <Image url="@images/flecha-abajo.png" />
                           </image>
                      <HBox.margin>
-                        <Insets left="120.0" />
+                        <Insets left="150.0" />
                      </HBox.margin>
                       </ImageView>
-                      <Label prefHeight="35.0" prefWidth="330.0" text="Tú flota">
+                      <Label prefHeight="35.0" prefWidth="362.0" text="Tú flota">
                           <font>
                               <Font name="System Bold" size="24.0" />
                           </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                       </Label>
                   <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                      <image>

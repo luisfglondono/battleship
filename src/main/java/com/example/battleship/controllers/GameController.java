@@ -20,39 +20,76 @@ import javafx.stage.Stage;
 import java.util.Random;
 
 public class GameController {
+    /**
+     * Matrix representing the machine's board.
+     */
     private Matrix machineBoard;
+    /**
+     * Matrix representing the player's board.
+     */
     private Matrix playerBoard;
+    /**
+     * Serialization utility for saving and loading game state.
+     */
     private serialization serialization;
+    /**
+     * AnchorPane for displaying the columns.
+     */
     @FXML
     private AnchorPane columnsPane;
-
+    /**
+     * AnchorPane for positioning elements.
+     */
     @FXML
     private AnchorPane panePosition;
-
+    /**
+     * AnchorPane for displaying the rows.
+     */
     @FXML
     private AnchorPane rowsPane;
-
+    /**
+     * AnchorPane for displaying the machine's columns.
+     */
     @FXML
     private AnchorPane columnsPaneMachine;
-
-
+    /**
+     * AnchorPane for positioning machine elements.
+     */
     @FXML
     private AnchorPane panePositionMachine;
-
-
+    /**
+     * AnchorPane for displaying the machine's rows.
+     */
     @FXML
     private AnchorPane rowsPaneMachine;
-
+    /**
+     * Label for displaying information.
+     */
     @FXML
     private Label informationLabel;
-
+    /**
+     * Game instance for managing game state.
+     */
     private Game game;
-
+    /**
+     * Size of the grid in pixels.
+     */
     private final int GRID_SIZE = 400;
+    /**
+     * Number of cells in the grid.
+     */
     private final int NUMBERS_CELL = 10;
+    /**
+     * Size of each cell in the grid.
+     */
     private final int CELL_SIZE = GRID_SIZE / NUMBERS_CELL;
-
-
+    /**
+     * Sets the boards for the machine and player, initializes the game, and sets up the event handler for mouse presses.
+     * Also draws the grids and ships for both the player and machine boards.
+     *
+     * @param machineBoard the machine's board
+     * @param playerBoard the player's board
+     */
     public void setBoards(Matrix machineBoard, Matrix playerBoard) {
         this.machineBoard = machineBoard;
         this.playerBoard = playerBoard;
@@ -63,7 +100,13 @@ public class GameController {
         this.drawGridMachine();
 
     }
-
+    /**
+     * Handles the mouse pressed event on the machine's board.
+     * Updates the game state based on the player's and machine's moves,
+     * checks for win conditions, and saves the game state.
+     *
+     * @param event the MouseEvent triggered by the user
+     */
     public void handleMousePressed(MouseEvent event) {
 
         int x = (int) event.getX() / 40;
@@ -197,6 +240,11 @@ public class GameController {
             }
         }
     }
+    /**
+     * Draws the grid for the machine's board.
+     * This includes drawing horizontal and vertical lines to form the grid,
+     * and adding labels for the columns and rows.
+     */
     public void drawGridMachine() {
         Line line;
 
@@ -243,6 +291,11 @@ public class GameController {
             rowsPaneMachine.getChildren().add(label);
         }
     }
+    /**
+     * Draws the grid for the player's board.
+     * This includes drawing horizontal and vertical lines to form the grid,
+     * and adding labels for the columns and rows.
+     */
     public void drawGrid() {
         Line line;
 
@@ -285,7 +338,11 @@ public class GameController {
             rowsPane.getChildren().add(label);
         }
     }
-
+    /**
+     * Draws the ships on the player's board.
+     * This includes setting the position, stroke, and fill of each ship,
+     * and adding them to the pane.
+     */
     public void drawShips() {
         Ship ship;
         Path path;
@@ -312,7 +369,12 @@ public class GameController {
             panePosition.getChildren().add(path);
         }
     }
-
+    /**
+     * Draws a path representing a sunk ship.
+     * This includes setting the stroke and fill colors.
+     *
+     * @return the path representing a sunk ship
+     */
     public static Path drawShipSunk(){
         Path figure = new Path(
                 new MoveTo(23,3),
@@ -330,7 +392,12 @@ public class GameController {
 
         return figure;
     }
-
+    /**
+     * Draws a path representing a water hit.
+     * This includes setting the stroke and fill colors.
+     *
+     * @return the path representing a water hit
+     */
     public static Path drawWaterHit(){
         Path figure = new Path(
                 new MoveTo(8,3),
@@ -354,7 +421,12 @@ public class GameController {
 
         return figure;
     }
-
+    /**
+     * Draws a path representing a ship hit.
+     * This includes setting the stroke and fill colors.
+     *
+     * @return the path representing a ship hit
+     */
     public static Path drawShipHit(){
         Path figure = new Path(
                 new MoveTo(18,38),

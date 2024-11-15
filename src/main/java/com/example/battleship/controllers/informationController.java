@@ -15,15 +15,32 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller class for handling information-related actions in the Battleship game.
+ */
 public class informationController {
-
+    /**
+     * Serialization utility for saving and loading game state.
+     */
     private serialization serialization;
+    /**
+     * Matrix representing the machine's board.
+     */
     private Matrix machineBoard;
+    /**
+     * Matrix representing the player's board.
+     */
     private Matrix playerBoard;
-
+    /**
+     * Label for displaying welcome text.
+     */
     @FXML
     private Label welcomeText;
-
+    /**
+     * Handles the action event for displaying game information.
+     *
+     * @param event the ActionEvent triggered by the user
+     */
     @FXML
     void onInformationButton(ActionEvent event) {
         new AlertBox().showAlert(
@@ -34,11 +51,31 @@ public class informationController {
         );
 
     }
+    /**
+     * Checks for a saved game and loads it if available.
+     */
+    public void checkAndLoadGame() {
+        serialization = new serialization();
+        String relativePath = serialization.getRelativePath();
+        File saveFile = new File(relativePath);
 
+        if (saveFile.exists() && saveFile.length() > 0) {
+            AlertBox alertBox = new AlertBox();
+            boolean confirmed = alertBox.showConfirmation("Confirmacion", "Se ha encontrado un juego guardado, Deseas continuar con el juego actual (si selecciona \"NO\" se iniciará un juego nuevo)");
+            if (confirmed) {
+                this.loadGame();
+            }
+        }
+    }
+    /**
+     * Handles the action event for starting the game.
+     *
+     * @param event the ActionEvent triggered by the user
+     */
     @FXML
-    void onNoButton(ActionEvent event) {
+    void onPlayButton(ActionEvent event) {
         AlertBox alertBox = new AlertBox();
-        boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres comenzar un nuevo juego?, (Si ya has empezado un juego se borrará tu progreso actual)");
+        boolean confirmed = alertBox.showConfirmation("Confirmacion", "¿Estas seguro que quieres comenzar a jugar?");
         if (confirmed)
         {
             try
@@ -52,38 +89,27 @@ public class informationController {
         }
 
     }
-
-    @FXML
-    void onYesButton(ActionEvent event) {
-        serialization = new serialization();
-        String relativePath = serialization.getRelativePath();
-
-        File saveFile = new File(relativePath);
-
-        if (saveFile.length() == 0) {
-            new AlertBox().showAlert(
-                    "Error",
-                    "No se puede continuar",
-                    "No se ha empezado ningún juego previamente.",
-                    Alert.AlertType.ERROR
-            );
-        } else {
-            try
-            {
-                List<Object> objects = serialization.deserializeObjects(serialization.getRelativePath());
-                if (objects.size() >= 2) {
-                    machineBoard = (Matrix) objects.get(0);
-                    playerBoard = (Matrix) objects.get(1);
-                    GameView gameView = new GameView(machineBoard, playerBoard);
-                    gameView.show();
-                    ((Stage) welcomeText.getScene().getWindow()).close();
-                }
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
+    /**
+     * Loads the saved game state.
+     */
+    public void loadGame()
+    {
+        try
+        {
+            List<Object> objects = serialization.deserializeObjects(serialization.getRelativePath());
+            if (objects.size() >= 2) {
+                machineBoard = (Matrix) objects.get(0);
+                playerBoard = (Matrix) objects.get(1);
+                GameView gameView = new GameView(machineBoard, playerBoard);
+                gameView.show();
+                Stage stage = (Stage) welcomeText.getScene().getWindow();
+                stage.close();
             }
         }
-
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
+
 }
