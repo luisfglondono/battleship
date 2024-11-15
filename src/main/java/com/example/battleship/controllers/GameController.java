@@ -209,35 +209,39 @@ public class GameController {
             }while(playerBoard.isHitOrSunk(w,z));
             serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
 
-            if (playerBoard.allShipsSunk()) {
-                new AlertBox().showAlert(
-                        "¡PERDISTE!",
-                        "¡La maquina ha hundido tu flota!",
-                        "",
-                        Alert.AlertType.INFORMATION
-                );
-                try {
-                    serialization.clearFile(serialization.getRelativePath());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                Platform.exit();
             }
-            if (machineBoard.allShipsSunk()) {
-                new AlertBox().showAlert(
-                        "¡GANASTE!",
-                        "¡Felicidades has hundido la flota enemiga!",
-                        "",
-                        Alert.AlertType.INFORMATION
-                );
-                try {
-                    serialization.clearFile(serialization.getRelativePath());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Platform.exit();
+
+        if (playerBoard.allShipsSunk())
+        {
+            new AlertBox().showAlert(
+                    "¡PERDISTE!",
+                    "¡La maquina ha hundido tu flota!",
+                    "",
+                    Alert.AlertType.INFORMATION
+            );
+            try {
+                serialization.clearFile(serialization.getRelativePath());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
+            Platform.exit();
+        }
+        if (machineBoard.allShipsSunk())
+        {
+            new AlertBox().showAlert(
+                    "¡GANASTE!",
+                    "¡Felicidades has hundido la flota enemiga!",
+                    "",
+                    Alert.AlertType.INFORMATION
+            );
+            try {
+                serialization.clearFile(serialization.getRelativePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Platform.exit();
         }
     }
     /**
