@@ -5,13 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="263.0" prefWidth="271.0" spacing="20.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.informationController">
+<VBox alignment="CENTER" prefHeight="263.0" prefWidth="271.0" spacing="20.0" style="-fx-border-width: 10px; -fx-border-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.informationController">
   <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    <Insets left="20.0" right="20.0" top="20.0" />
   </padding>
    <ImageView fitHeight="113.0" fitWidth="453.0" pickOnBounds="true" preserveRatio="true">
       <image>
@@ -23,23 +22,19 @@
       <font>
          <Font name="System Bold" size="19.0" />
       </font></Label>
-   <HBox alignment="TOP_CENTER" prefHeight="42.0" prefWidth="382.0">
-      <children>
-         <Button mnemonicParsing="false" onAction="#onPlayButton" text="Jugar">
-            <HBox.margin>
-               <Insets right="60.0" />
-            </HBox.margin></Button>
-         <Button mnemonicParsing="false" onAction="#onInformationButton" text="Instrucciones">
-            <HBox.margin>
-               <Insets />
-            </HBox.margin>
-         </Button>
-      </children>
-      <VBox.margin>
-         <Insets />
-      </VBox.margin>
-      <padding>
-         <Insets top="7.0" />
-      </padding>
-   </HBox>
+   <Button mnemonicParsing="false" onAction="#onPlayButton" style="-fx-border-width: 3; -fx-border-color: black; -fx-background-color: #38419D; -fx-border-radius: 3;" text="JUGAR" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Button>
+   <Button mnemonicParsing="false" onAction="#onInformationButton" style="-fx-border-color: black; -fx-border-width: 3; -fx-background-color: #3887BE; -fx-border-radius: 3;" text="INSTRUCCIONES" textFill="WHITE">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Button>
+   <ImageView fitHeight="91.0" fitWidth="259.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@images/ship.png" />
+      </image>
+   </ImageView>
 </VBox>

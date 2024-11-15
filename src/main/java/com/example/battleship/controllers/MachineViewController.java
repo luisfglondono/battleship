@@ -226,8 +226,8 @@ public class MachineViewController {
             path.setLayoutY(ship.getTailY() * CELL_SIZE);
 
             path.setStrokeWidth(2);
-            path.setStroke(Color.web("#00f"));
-            path.setFill(Color.rgb(0, 0, 255, 0.05));
+            path.setStroke(Color.web("#f00"));
+            path.setFill(Color.rgb(255, 0, 0, 0.05));
 
             if (ship.getDirection() == Ship.Direction.VERTICAL) {
                 Rotate rotate = new Rotate(90, 20, 20);
