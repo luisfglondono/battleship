@@ -1,11 +1,8 @@
 package com.example.battleship.controllers;
 
-import com.example.battleship.models.Game;
 import com.example.battleship.models.Matrix;
 import com.example.battleship.models.Ship;
 import com.example.battleship.views.GameView;
-import com.example.battleship.views.MachineViewView;
-import com.example.battleship.views.PlacementView;
 import com.example.battleship.views.alert.AlertBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -131,8 +128,6 @@ public class MachineViewController {
 
             AnchorPane.setLeftAnchor(label, 0.0);
             AnchorPane.setTopAnchor(label, i * 40.0);
-
-
 
             rowsPaneMachine.getChildren().add(label);
         }

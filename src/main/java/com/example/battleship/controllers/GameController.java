@@ -117,6 +117,7 @@ public class GameController {
         this.drawGridMachine();
         this.drawHitsContinue();
         nameLabel.setText(playerBoard.getUsername());
+        labelTurnInGame.setText("TURNO DE: " + playerBoard.getUsername());
     }
     /**
      * Handles the action event for starting a new game.
@@ -207,7 +208,7 @@ public class GameController {
             }
         }
         if (game.getTurn() % 2 != 0) {
-            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.4));
             pause.setOnFinished(e -> {
                 int w, z;
                 do {
@@ -256,43 +257,49 @@ public class GameController {
                         }
                     }
                 } while (playerBoard.isHitOrSunk(w, z));
+
                 serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
+
+                if (playerBoard.allShipsSunk()) {
+                    try {
+                        serialization.clearFile(serialization.getRelativePath());
+                    } catch (Exception ignored) {}
+
+                    Platform.runLater(() -> {
+                        labelTurnInGame.setText("TURNO DE: Maquina");
+                        new AlertBox().showAlert(
+                                "¡PERDISTE!",
+                                "¡La máquina ha hundido tu flota!",
+                                "",
+                                Alert.AlertType.INFORMATION
+                        );
+                        Platform.exit();
+                    });
+                }
             });
+
             pause.play();
         }
 
+        serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
 
-        if (playerBoard.allShipsSunk())
-        {
+        if (machineBoard.allShipsSunk()) {
             try {
                 serialization.clearFile(serialization.getRelativePath());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            labelTurnInGame.setText("TURNO DE: Maquina");
-            new AlertBox().showAlert(
-                    "¡PERDISTE!",
-                    "¡La maquina ha hundido tu flota!",
-                    "",
-                    Alert.AlertType.INFORMATION
-            );
-            Platform.exit();
+            } catch (Exception ignored) {}
+
+            // Usamos Platform.runLater() para mostrar la alerta después de la pausa
+            Platform.runLater(() -> {
+                new AlertBox().showAlert(
+                        "¡GANASTE!",
+                        "¡Felicidades has hundido la flota enemiga!",
+                        "",
+                        Alert.AlertType.INFORMATION
+                );
+                Platform.exit();
+            });
         }
-        if (machineBoard.allShipsSunk())
-        {
-            try {
-                serialization.clearFile(serialization.getRelativePath());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            new AlertBox().showAlert(
-                    "¡GANASTE!",
-                    "¡Felicidades has hundido la flota enemiga!",
-                    "",
-                    Alert.AlertType.INFORMATION
-            );
-            Platform.exit();
-        }
+
     }
     /**
      * Draws the grid for the machine's board.
