@@ -13,17 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="990.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.GameController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="990.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.GameController">
     <children>
-        <ImageView fitHeight="233.0" fitWidth="478.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@images/logo.png" />
-            </image></ImageView>
         <HBox prefHeight="12.0" prefWidth="500.0" spacing="5.0">
             <children>
                 <HBox alignment="CENTER" prefHeight="35.0" prefWidth="970.0" spacing="370.0">
                     <children>
-                        <Label prefHeight="35.0" prefWidth="95.0" text="Tu flota">
+                        <Label prefHeight="35.0" text="Tu flota">
                             <font>
                                 <Font name="System Bold" size="24.0" />
                             </font>
@@ -37,13 +33,16 @@
                             </HBox.margin>
                         </Label>
                     </children>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
                 </HBox>
             </children>
             <VBox.margin>
                 <Insets left="20.0" />
             </VBox.margin>
         </HBox>
-        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
             <children>
                 <GridPane maxHeight="440.0" maxWidth="440.0" minHeight="440.0" prefHeight="440.0" prefWidth="440.0">
                     <columnConstraints>
@@ -93,22 +92,13 @@
         </HBox>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
             <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#OnActionNewGame" text="NUEVO JUEGO">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <opaqueInsets>
-                  <Insets right="50.0" />
-               </opaqueInsets>
-            </HBox>
                 <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@images/captain.png" />
                     </image>
+               <HBox.margin>
+                  <Insets left="40.0" />
+               </HBox.margin>
                 </ImageView>
                 <VBox>
                     <children>
@@ -132,7 +122,20 @@
                         </Label>
                     </children>
                 </VBox>
-            <Label fx:id="labelTurnInGame" prefHeight="18.0" prefWidth="171.0" text="TURNO DE:" />
+            <VBox alignment="CENTER" prefHeight="150.0" prefWidth="272.0" spacing="30.0">
+               <children>
+                  <Label fx:id="labelTurnInGame" prefHeight="35.0" prefWidth="271.0" text="TURNO DE:">
+                     <font>
+                        <Font name="System Italic" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#OnActionNewGame" style="-fx-border-color: black; -fx-border-width: 3; -fx-background-color: #3887BE; -fx-border-radius: 3;" text="NUEVO JUEGO" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
             </children>
          <opaqueInsets>
             <Insets />
@@ -140,9 +143,6 @@
          <VBox.margin>
             <Insets />
          </VBox.margin>
-         <padding>
-            <Insets right="50.0" />
-         </padding>
         </HBox>
     </children>
 </VBox>
