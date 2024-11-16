@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="263.0" prefWidth="271.0" spacing="20.0" style="-fx-border-width: 10px; -fx-border-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.informationController">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-border-width: 10px; -fx-border-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.controllers.informationController">
   <padding>
     <Insets left="20.0" right="20.0" top="20.0" />
   </padding>
@@ -22,7 +22,7 @@
       <font>
          <Font name="System Bold" size="19.0" />
       </font></Label>
-   <Button mnemonicParsing="false" onAction="#onPlayButton" style="-fx-border-width: 3; -fx-border-color: black; -fx-background-color: #38419D; -fx-border-radius: 3;" text="JUGAR" textFill="WHITE">
+   <Button mnemonicParsing="false" onAction="#onPlayButton" style="-fx-border-width: 3; -fx-border-color: black; -fx-background-color: #38419D; -fx-border-radius: 3;" text="NUEVA PARTIDA" textFill="WHITE">
       <font>
          <Font name="System Bold" size="18.0" />
       </font>
