@@ -4,7 +4,6 @@ import com.example.battleship.models.Matrix;
 import com.example.battleship.models.Ship;
 import com.example.battleship.views.GameView;
 import com.example.battleship.views.MachineViewView;
-import com.example.battleship.views.PlacementView;
 import com.example.battleship.views.alert.AlertBox;
 import com.example.battleship.models.utilities.serialization;
 import javafx.fxml.FXML;
@@ -69,10 +68,6 @@ public class PlacementController {
      */
     private Matrix machineBoard;
     /**
-     * Serialization utility for saving and loading game state.
-     */
-    private serialization serialization;
-    /**
      * Flag indicating whether the current movement is valid.
      */
     private boolean movementValid;
@@ -113,11 +108,10 @@ public class PlacementController {
     }
     /**
      * Initializes the PlacementController.
-     * Sets up the instance, serialization, player and machine boards, and event handlers.
+     * Sets up the instance, player and machine boards, and event handlers.
      */
     public void initialize() {
         instance = this;
-        serialization = new serialization();
         playerBoard = new Matrix();
         machineBoard = new Matrix();
         movementValid = false;
@@ -129,7 +123,6 @@ public class PlacementController {
         panePosition.setOnMousePressed(this::handleMousePressed);
         panePosition.setOnMouseDragged(this::handleMouseDragged);
         panePosition.setOnMouseReleased(this::handleMouseReleased);
-        serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
     }
     /**
      * Handles mouse moved events.
@@ -366,9 +359,9 @@ public class PlacementController {
         {
             try
             {
+                playerBoard.setUsername(textFieldName.getText());
                 serialization.serializeObjects("objectsSerialization.txt", machineBoard, playerBoard);
                 GameView gameView = new GameView(machineBoard, playerBoard);
-                playerBoard.setUsername(textFieldName.getText());
                 gameView.show();
                 ((Stage) panePosition.getScene().getWindow()).close();
             } catch (IOException e) {
